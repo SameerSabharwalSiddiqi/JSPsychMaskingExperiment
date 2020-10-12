@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src = "jspsych/jspsych.js"></script>
+        <script src = "jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src = "jspsych/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src = "jspsych/plugins/jspsych-html-button-response.js"></script>
+        <link href = "jspsych/css/jspsych.css" rel = "stylesheet">
+    </head>
+    <body></body>
+    <script>
+        //Control Center
+        nTrials= 8 //200 is default
+        forwardMaskDuration= 1000 //250 is default
+        cueDuration= 2000 //16 is default
+        backwardsMaskDuration= 100 //100 is default
+        ITIduration= 1600
+
+
+        //Message prompting user to begin presentation
+        var timeline = [];
+        var welcomeTrial = {
+            type: 'html-keyboard-response',
+            stimulus: 'Press Key to Begin Presentations<BR/n>1000ms ITI <BR/n> 250ms phase-scrambled forward mask<BR/n>16ms Disgust-Face Cue\<BR/n>100ms neutral face<BR/n>250ms Fixation <BR/n>Query Subject with Prompt.'
+        }
+        
+        timeline.push(welcomeTrial)
+        for (let i=1; i <nTrials;i++){ 
+        //Loop through 200 trials 
+
+        //Select cue Images (do this prior to cue-phase)
+        var neutralFacesArr= ['AF01NES.JPG', 'AF02NES.JPG', 'AF03NES.JPG', 'AF04NES.JPG', 'AF05NES.JPG', 'AF06NES.JPG', 'AF07NES.JPG', 'AF08NES.JPG', 'AF09NES.JPG', 'AF10NES.JPG', 'AF11NES.JPG', 'AF12NES.JPG', 'AF13NES.JPG', 'AF14NES.JPG', 'AF15NES.JPG', 'AF16NES.JPG', 'AF17NES.JPG', 'AF18NES.JPG', 'AF19NES.JPG', 'AF20NES.JPG', 'AF21NES.JPG', 'AF22NES.JPG', 'AF23NES.JPG', 'AF24NES.JPG', 'AF25NES.JPG', 'AF26NES.JPG', 'AF27NES.JPG', 'AF28NES.JPG', 'AF29NES.JPG', 'AF30NES.JPG', 'AF31NES.JPG', 'AF32NES.JPG', 'AF33NES.JPG', 'AF34NES.JPG', 'AF35NES.JPG', 'AM01NES.JPG', 'AM02NES.JPG', 'AM03NES.JPG', 'AM04NES.JPG', 'AM05NES.JPG', 'AM06NES.JPG', 'AM07NES.JPG', 'AM08NES.JPG', 'AM09NES.JPG', 'AM10NES.JPG', 'AM11NES.JPG', 'AM12NES.JPG', 'AM13NES.JPG', 'AM14NES.JPG', 'AM15NES.JPG', 'AM16NES.JPG', 'AM17NES.JPG', 'AM18NES.JPG', 'AM19NES.JPG', 'AM20NES.JPG', 'AM21NES.JPG', 'AM22NES.JPG', 'AM23NES.JPG', 'AM24NES.JPG', 'AM25NES.JPG', 'AM26NES.JPG', 'AM27NES.JPG', 'AM28NES.JPG', 'AM29NES.JPG', 'AM30NES.JPG', 'AM31NES.JPG', 'AM32NES.JPG', 'AM33NES.JPG', 'AM34NES.JPG', 'AM35NES.JPG', 'BF01NES.JPG', 'BF02NES.JPG', 'BF03NES.JPG', 'BF04NES.JPG', 'BF05NES.JPG', 'BF06NES.JPG', 'BF07NES.JPG', 'BF08NES.JPG', 'BF09NES.JPG', 'BF10NES.JPG', 'BF11NES.JPG', 'BF12NES.JPG', 'BF13NES.JPG', 'BF14NES.JPG', 'BF15NES.JPG', 'BF16NES.JPG', 'BF17NES.JPG', 'BF18NES.JPG', 'BF19NES.JPG', 'BF20NES.JPG', 'BF21NES.JPG', 'BF22NES.JPG', 'BF23NES.JPG', 'BF24NES.JPG', 'BF25NES.JPG', 'BF26NES.JPG', 'BF27NES.JPG', 'BF28NES.JPG', 'BF29NES.JPG', 'BF30NES.JPG', 'BF31NES.JPG', 'BF32NES.JPG', 'BF33NES.JPG', 'BF34NES.JPG', 'BF35NES.JPG', 'BM01NES.JPG', 'BM02NES.JPG', 'BM03NES.JPG', 'BM04NES.JPG', 'BM05NES.JPG', 'BM06NES.JPG', 'BM07NES.JPG', 'BM08NES.JPG', 'BM09NES.JPG', 'BM10NES.JPG', 'BM11NES.JPG', 'BM12NES.JPG', 'BM13NES.JPG', 'BM14NES.JPG', 'BM15NES.JPG', 'BM16NES.JPG', 'BM17NES.JPG', 'BM18NES.JPG', 'BM19NES.JPG', 'BM20NES.JPG', 'BM21NES.JPG', 'BM22NES.JPG', 'BM23NES.JPG', 'BM24NES.JPG', 'BM25NES.JPG', 'BM26NES.JPG', 'BM27NES.JPG', 'BM28NES.JPG', 'BM29NES.JPG', 'BM30NES.JPG', 'BM31NES.JPG', 'BM32NES.JPG', 'BM33NES.JPG', 'BM34NES.JPG', 'BM35NES.JPG']
+        var disgustFacesArr = ['AF01DIS.JPG', 'AF02DIS.JPG', 'AF03DIS.JPG', 'AF04DIS.JPG', 'AF05DIS.JPG', 'AF06DIS.JPG', 'AF07DIS.JPG', 'AF08DIS.JPG', 'AF09DIS.JPG', 'AF10DIS.JPG', 'AF11DIS.JPG', 'AF12DIS.JPG', 'AF13DIS.JPG', 'AF14DIS.JPG', 'AF15DIS.JPG', 'AF16DIS.JPG', 'AF17DIS.JPG', 'AF18DIS.JPG', 'AF19DIS.JPG', 'AF20DIS.JPG', 'AF21DIS.JPG', 'AF22DIS.JPG', 'AF23DIS.JPG', 'AF24DIS.JPG', 'AF25DIS.JPG', 'AF26DIS.JPG', 'AF27DIS.JPG', 'AF28DIS.JPG', 'AF29DIS.JPG', 'AF30DIS.JPG', 'AF31DIS.JPG', 'AF32DIS.JPG', 'AF33DIS.JPG', 'AF34DIS.JPG', 'AF35DIS.JPG', 'AM01DIS.JPG', 'AM02DIS.JPG', 'AM03DIS.JPG', 'AM04DIS.JPG', 'AM05DIS.JPG', 'AM06DIS.JPG', 'AM07DIS.JPG', 'AM08DIS.JPG', 'AM09DIS.JPG', 'AM10DIS.JPG', 'AM11DIS.JPG', 'AM12DIS.JPG', 'AM13DIS.JPG', 'AM14DIS.JPG', 'AM15DIS.JPG', 'AM16DIS.JPG', 'AM17DIS.JPG', 'AM18DIS.JPG', 'AM19DIS.JPG', 'AM20DIS.JPG', 'AM21DIS.JPG', 'AM22DIS.JPG', 'AM23DIS.JPG', 'AM24DIS.JPG', 'AM25DIS.JPG', 'AM26DIS.JPG', 'AM27DIS.JPG', 'AM28DIS.JPG', 'AM29DIS.JPG', 'AM30DIS.JPG', 'AM31DIS.JPG', 'AM32DIS.JPG', 'AM33DIS.JPG', 'AM34DIS.JPG', 'AM35DIS.JPG', 'BF01DIS.JPG', 'BF02DIS.JPG', 'BF03DIS.JPG', 'BF04DIS.JPG', 'BF05DIS.JPG', 'BF06DIS.JPG', 'BF07DIS.JPG', 'BF08DIS.JPG', 'BF09DIS.JPG', 'BF10DIS.JPG', 'BF11DIS.JPG', 'BF12DIS.JPG', 'BF13DIS.JPG', 'BF14DIS.JPG', 'BF15DIS.JPG', 'BF16DIS.JPG', 'BF17DIS.JPG', 'BF18DIS.JPG', 'BF19DIS.JPG', 'BF20DIS.JPG', 'BF21DIS.JPG', 'BF22DIS.JPG', 'BF23DIS.JPG', 'BF24DIS.JPG', 'BF25DIS.JPG', 'BF26DIS.JPG', 'BF27DIS.JPG', 'BF28DIS.JPG', 'BF29DIS.JPG', 'BF30DIS.JPG', 'BF31DIS.JPG', 'BF32DIS.JPG', 'BF33DIS.JPG', 'BF34DIS.JPG', 'BF35DIS.JPG', 'BM01DIS.JPG', 'BM02DIS.JPG', 'BM03DIS.JPG', 'BM04DIS.JPG', 'BM05DIS.JPG', 'BM06DIS.JPG', 'BM07DIS.JPG', 'BM08DIS.JPG', 'BM09DIS.JPG', 'BM10DIS.JPG', 'BM11DIS.JPG', 'BM12DIS.JPG', 'BM13DIS.JPG', 'BM14DIS.JPG', 'BM15DIS.JPG', 'BM16DIS.JPG', 'BM17DIS.JPG', 'BM18DIS.JPG', 'BM19DIS.JPG', 'BM20DIS.JPG', 'BM21DIS.JPG', 'BM22DIS.JPG', 'BM23DIS.JPG', 'BM24DIS.JPG', 'BM25DIS.JPG', 'BM26DIS.JPG', 'BM27DIS.JPG', 'BM28DIS.JPG', 'BM29DIS.JPG', 'BM30DIS.JPG', 'BM31DIS.JPG', 'BM32DIS.JPG', 'BM33DIS.JPG', 'BM34DIS.JPG', 'BM35DIS.JPG']
+        var randomNeutralImages = jsPsych.randomization.sampleWithoutReplacement(neutralFacesArr,2) //one for cue, one for bakcward mask        
+        var randomDisgustImage = jsPsych.randomization.sampleWithoutReplacement(disgustFacesArr,1)
+        var NeutralImageForCue = randomNeutralImages[0]
+        var NeutralImageForMask = randomNeutralImages[1]
+
+        var NeutralImageCuePath = ['jspsych/neutralFaces',NeutralImageForCue].join('/')
+        var NeutralImageMaskPath = ['jspsych/neutralFaces',NeutralImageForMask].join('/')
+        var DisgustImagePath = ['jspsych/disgustFaces',randomDisgustImage].join('/')
+
+
+        //1000ms ITI 
+        var ITI = {
+        type: 'html-keyboard-response',
+        stimulus: '<div style="font-size:60px;">+</div>',
+        choices: jsPsych.NO_KEYS,
+        trial_duration: ITIduration,
+        }
+        timeline.push(ITI)
+
+        //250ms Forward-Mask (phase-scrambled face)
+        var forwardMask = {
+        type: 'image-keyboard-response',
+        stimulus:'jspsych/examples/img/phase_scrambled_face.jpg',
+        choices: jsPsych.NO_KEYS,
+        stimulus_width: 300,
+        trial_duration: forwardMaskDuration,
+        }
+        timeline.push(forwardMask)
+
+
+        //Define two variable stimuli for the cue, see integration below in "cue_proecure"
+        var cue_face_stimuli = [
+            {cue_face: NeutralImageCuePath, data: {test_part: 'test', correct_response: 'd'}},
+            {cue_face: DisgustImagePath, data: {test_part: 'test', correct_response: 'n'}}
+        ]
+
+        //present the cue (16ms)
+        var cueImage = {
+        type: 'image-keyboard-response',
+        stimulus: jsPsych.timelineVariable('cue_face'),
+        choices: jsPsych.NO_KEYS,
+        stimulus_width: 300,
+        trial_duraction: cueDuration,
+        data: jsPsych.timelineVariable('data'),
+            on_finish: function(data){
+        data.CorrectKeyResponse = jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+        }}
+
+        //100ms Neutral Face 
+        var backwardMask = {
+        type: 'image-keyboard-response',
+        stimulus: NeutralImageMaskPath,
+        choices: jsPsych.NO_KEYS,
+        stimulus_width: 300,
+        trial_duration: backwardsMaskDuration,
+        };
+
+        //250ms Fixation Point 
+        var fixation = {
+        type: 'html-keyboard-response',
+        stimulus: '<div style="font-size:60px;">+</div>',
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 250,
+        }
+       // timeline.push(fixation)
+
+        //Ask Subject: Was "hidden face" emotional or neutral
+        var test = {
+        type: 'html-keyboard-response',
+        stimulus: '<p>Press, d=disgust, n=neutral</p>',
+        choices: ['d', 'n'],
+        data: jsPsych.timelineVariable('data'),
+        on_finish: function(data){
+        data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+        }}
+        //timeline.push(test)
+
+        var cue_procedure = {
+        timeline: [cueImage,test],
+        timeline_variables: cue_face_stimuli,
+        sample: {
+        type: 'without-replacement',
+        size: 1, // 1 trial without replacement (doesn't really matter since the size is 1)
+        }}
+        timeline.push(cue_procedure)
+        
+        jsPsych.init({
+            timeline: timeline,
+            on_finish: function(){  jsPsych.data.displayData()}
+        })}
+    </script>
+</html>

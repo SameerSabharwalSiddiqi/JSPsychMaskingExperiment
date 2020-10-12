@@ -10,7 +10,7 @@
     <body></body>
     <script>
         //Command Center
-        nTrials = 2 //default = 201 (+1 the number of desired trials)
+        nTrials = 1 //default = 200 
         ITIDuration= 1000 //default = 1000
         forwardMaskDuration = 250 //default = 250
         cueDuration = [16] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
@@ -25,13 +25,14 @@
             type: 'html-keyboard-response',
             stimulus: 'Press Key to Begin Experiment',
             on_finish: function(data){
+        data.iTrial = 1,
         data.Phase = 'welcomeScreen';
         }
         }
         timeline.push(welcomeTrial)
 
         //Loop through a fleixble number of trials
-        for (let i=1; i <nTrials;i++){ 
+        for (let i=0; i <nTrials;i++){ 
                 
         //1000msITI
         var ITI = {
@@ -41,6 +42,7 @@
         trial_duration: ITIDuration,
         on_finish: function(data){
         data.StimulusDurationSetting = ITIDuration,
+        data.iTrial = i+1,
         data.Phase = 'ITI';
         }
         }
@@ -67,6 +69,7 @@
         trial_duration: forwardMaskDuration,
         on_finish: function(data){
         data.StimulusDurationSetting = forwardMaskDuration,
+        data.iTrial = i+1,
         data.Phase = 'forwardMask';
         }
         }
@@ -92,6 +95,7 @@
             on_finish: function(data){
         data.CorrectKeyResponse = jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response),
         data.StimulusDurationSetting = sampledCueDuration,
+        data.iTrial = i+1,
         data.Phase = 'Cue';
         }}
 
@@ -105,6 +109,7 @@
         trial_duration: backwardMaskDuration,
         on_finish: function(data){
         data.StimulusDurationSetting = backwardMaskDuration,
+        data.iTrial = i+1,
         data.Phase = 'backwardMask';
         }
         };
@@ -118,6 +123,7 @@
         trial_duration: fixationDuration,
         on_finish: function(data){
         data.StimulusDurationSetting = fixationDuration,
+        data.iTrial = i+1,
         data.Phase = 'fixationBtwnNeutralMaskAndPrompt';
         }
         }
@@ -132,6 +138,7 @@
         on_finish: function(data){
         data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response),
         data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),
+        data.iTrial = i+1,
         data.Phase = 'Query';
         }}
         //timeline.push(test)

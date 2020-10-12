@@ -1,0 +1,4 @@
+1. CD to MaskingExperiment in Desktop
+2. git add . 
+3. git commit -m "message here" 
+4. git push -u (pushes to github)

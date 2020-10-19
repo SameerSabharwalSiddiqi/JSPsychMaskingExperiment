@@ -2,7 +2,8 @@
 %phase-scrambled faces in the same order. 
 
 %Control Panel
-rewriteFilesAndReturnScript = 0; %if set to 0, this script will just return the directory contents for copy/pasting into cognition.run
+verticallyFlipInsteadofScramblingFaces = 1; %Set this to 1 to vertically flip faces instead of scrambling them, useful if you want to just do a sanity check to make sure same face is being used for mask and cue
+rewriteFilesAndReturnScript = 1; %if set to 0, this script will just return the directory contents for copy/pasting into cognition.run
 
 if rewriteFilesAndReturnScript == 1
 disgustFaces = dir(fullfile('jspsych/disgustFaces','*.JPG'));
@@ -16,17 +17,16 @@ for i = 1:nDisgustFaces
     %select and scramble face
     face = disgustFaces(i).name;
     faceDir = fullfile('jspsych/disgustFaces',face);
+    if verticallyFlipInsteadofScramblingFaces == 0
     scrambledFace = phaseScrambleFace(faceDir);
-    
+    elseif verticallyFlipInsteadofScramblingFaces == 1
+    img = imread(faceDir); %vertically flipped for sanity check
+    scrambledFace = flip(img,1); %Vertically flipped for sanity check
+    end
     %generate unique string for naming file
     strName = strcat('scrambled',face);
     scrambledDir = fullfile('jspsych/scrambledDisgustFaces',strName);
     imwrite(scrambledFace,scrambledDir,'JPG');
-end
-
-scrambledDisgustFaces = dir(scrambledDir);
-if length('jspsych/scrambledDisgustFaces') ~= nDisgustFaces
-    error('number of elements in disgust and phase_scrambled_disgust directories do not agree, please manually delete any existing phase_scrambled_disgust directory')
 end
 
 nNeutralFaces = length(neutralFaces);
@@ -34,20 +34,15 @@ for i = 1:nNeutralFaces
     %select and scramble face
     face = neutralFaces(i).name;
     faceDir = fullfile('jspsych/neutralFaces',face);
+    if verticallyFlipInsteadofScramblingFaces == 0
     scrambledFace = phaseScrambleFace(faceDir);
-    
+    elseif verticallyFlipInsteadofScramblingFaces == 1
+    img = imread(faceDir); %vertically flipped for sanity check
+    scrambledFace = flip(img,1); %Vertically flipped for sanity check
+    end    %scrambledFace = flip(faceDir,1);
     %generate unique string for naming file
     strName = strcat('scrambled',face);
     scrambledDir = fullfile('jspsych/scrambledNeutralFaces',strName);
     imwrite(scrambledFace,scrambledDir,'JPG');
 end
-
-scrambledNeutralFaces = dir('jspsych/scrambledNeutralFaces');
-if length(scrambledNeutralFaces) ~= nNeutralFaces
-    error('number of elements in neutral and phase_scrambled_neutral directories do not agree, please manually delete any existing phase_scrambled_neutral directory')
-end
-end
-
-for i = 1:length(scrambledNeutralFaces)
-    neutralF
 end

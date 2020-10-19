@@ -23,4 +23,4 @@ input("Press Enter to continue...")
 
 arrScrambledNeutral = os.listdir('jspsych/scrambledNeutralFaces')
 print('below are the SCRAMBLED Neutral faces')
-print(arrScrambledDisgust)
+print(arrScrambledNeutral)

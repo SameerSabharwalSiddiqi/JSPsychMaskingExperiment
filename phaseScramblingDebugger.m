@@ -3,7 +3,9 @@
 disgustFaces = dir(fullfile('jspsych/disgustFaces','*.JPG'));
     face = disgustFaces(90).name;
     faceDir = fullfile('jspsych/disgustFaces',face);
-    scrambledFace = phaseScrambleFace(faceDir);
+    %scrambledFace = phaseScrambleFace(faceDir);
+    img = imread(faceDir); %vertically flipped for sanity check
+    scrambledFace = flip(img,1); %Vertically flipped for sanity check
     figure(1)
     subplot(1,2,1)
     imshow(faceDir);

@@ -8,28 +8,19 @@ from PIL import Image
 arrDisgust = os.listdir('jspsych/disgustFaces')
 print('below are the DISGUST faces')
 print(arrDisgust)
-for i in range(1,len(arrDisgust)):
-        #phase-scramble function, use below for temporary:
-    #save scrambledFace.JPG
-    iString = str(i) #just for debugging
-    print(iString)
-    iStringArr = [iString]
-    if i == 1:
-        arrDisgustScrambled = iStringArr
-    if i > 1:
-        arrDisgustScrambled.extend([iString])
+input("Press Enter to continue...")
+
+arrScrambledDisgust = os.listdir('jspsych/scrambledDisgustFaces')
+print('below are the SCRAMBLED DISGUST faces')
+print(arrScrambledDisgust)
+input("Press Enter to continue...")
+
 
 arrNeutral = os.listdir('jspsych/neutralFaces')
 print('below are the NEUTRAL faces')
 print(arrNeutral)
+input("Press Enter to continue...")
 
-for i in range(1,len(arrNeutral)):
-        #phase-scramble function, use below for temporary:
-    #save scrambledFace.JPG
-    iString = str(i) #just for debugging
-    print(iString)
-    iStringArr = [iString]
-    if i == 1:
-        arrNeutralScrambled = iStringArr
-    if i > 1:
-        arrNeutralScrambled.extend([iString])
+arrScrambledNeutral = os.listdir('jspsych/scrambledNeutralFaces')
+print('below are the SCRAMBLED Neutral faces')
+print(arrScrambledDisgust)

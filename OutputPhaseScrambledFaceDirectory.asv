@@ -1,0 +1,15 @@
+%Based on folders disgustFaces and neutralFaces, return and write
+%phase-scrambled faces in the same order. 
+disgustFaces = dir(fullfile('jspsych/disgustFaces','*.JPG'));
+neutralFaces = dir(fullfile('jspsych/neutralFaces','*.JPG'));
+
+for i = 1:length(disgustFaces)
+    %select and scramble face
+    face = disgustFaces(i).name;
+    scrambledFace = phaseScrambleFace(face);
+    
+    %generate script-
+    imwrite(scrambledFace
+end
+
+for i = 1:length

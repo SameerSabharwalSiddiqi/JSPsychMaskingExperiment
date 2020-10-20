@@ -2,7 +2,7 @@
 %phase-scrambled faces in the same order. 
 
 %Control Panel
-verticallyFlipInsteadofScramblingFaces = 1; %Set this to 1 to vertically flip faces instead of scrambling them, useful if you want to just do a sanity check to make sure same face is being used for mask and cue
+verticallyFlipInsteadofScramblingFaces = 0; %Set this to 1 to vertically flip faces instead of scrambling them, useful if you want to just do a sanity check to make sure same face is being used for mask and cue
 rewriteFilesAndReturnScript = 1; %if set to 0, this script will just return the directory contents for copy/pasting into cognition.run
 
 if rewriteFilesAndReturnScript == 1

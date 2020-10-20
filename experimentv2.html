@@ -10,10 +10,10 @@
     <body></body>
     <script>
         //Command Center
-        nTrials = 10 //default = 200 
+        nTrials = 5 //default = 200 
         ITIDuration= 1000 //default = 1000
         forwardMaskDuration = 100 //default = 250
-        cueDuration = [1600] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
+        cueDuration = [2000] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
         backwardMaskDuration = 0 //default = 100
         fixationDuration = 100 //default = 200
         disgustKey = 'd'// When changing, change in prompt for test-phase as well!
@@ -86,8 +86,16 @@
         var scrambledDisgustImagePath = ['jspsych/scrambledDisgustFaces',randomScrambledDisgustMask].join('/')
         //chooseTheImage
 
-        
-
+        delete CoinToss
+        var CoinToss = jsPsych.randomization.sampleWithReplacement([0,1], 1);
+        console.log= CoinToss
+        if(CoinToss==0){
+            var scrambledMaskPath= scrambledNeutralImagePath
+            var imageCuePath= NeutralImageCuePath
+        }else{
+            var scrambledMaskPath= scrambledDisgustImagePath
+            var imageCuePath= DisgustImageCuePath
+        }
 
         //Finally, the path for the backwards Neutral Mask:
         var NeutralImageMaskPath = ['jspsych/neutralFaces',randomNeutralMaskImage].join('/')
@@ -102,11 +110,19 @@
         on_finish: function(data){
         data.StimulusDurationSetting = forwardMaskDuration,
         data.iTrial = i+1,
-        data.Phase = 'forwardMask';
+        data.Phase = 'forwardMask'
+        if(data.stimulus.includes('NES.JPG')){
+            data.correctResponse = neutralKey
+            data= {test_part: 'test', correct_response: neutralKey}
+            var correctResponse = neutralKey}
+            else{
+            data.correctResponse = disgustKey
+            data= {test_part: 'test', correct_response: disgustKey}
+            var correctResponse = disgustKey}
         }
         }
         timeline.push(forwardMask)
-        
+        var correctResponse= correctResponse
         //Define two variable stimuli for the cue, see integration below in "cue_proecure"
 
         var sampledCueDuration= function(){
@@ -119,9 +135,7 @@
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: sampledCueDuration,
-           on_finish: function(data){
-        data.CoinToss = CoinToss,
-        data.correctResponse = correctResponse,
+           on_finish: function(data){      
         data.StimulusDurationSetting = sampledCueDuration,
         data.iTrial = i+1,
         data.Phase = 'Cue';
@@ -164,13 +178,14 @@
         stimulus: '<p>Press, d=disgust, n=neutral</p>',
         choices: ['d', 'n'],
         on_finish: function(data){
-        data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
+        //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
         data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),
         data.iTrial = i+1,
         data.Phase = 'Query';
         }}
         timeline.push(test)
         
+
         jsPsych.init({
             timeline: timeline,
             on_finish: function(){  jsPsych.data.displayData()}

@@ -5,32 +5,46 @@
         <script src = "jspsych/plugins/jspsych-html-keyboard-response.js"></script>
         <script src = "jspsych/plugins/jspsych-image-keyboard-response.js"></script>
         <script src = "jspsych/plugins/jspsych-html-button-response.js"></script>
+        <script src = "jspsych/plugins/jspsych-survey-text.js"></script>
+        <script src = "jspsych/plugins/jspsych-html-button-response.js"></script>
+        <script src = "jspsych/plugins/jspsych-video-button-response.js"></script>
+        <script src = "jspsych/plugins/jspsych-fullscreen.js"></script>
         <link href = "jspsych/css/jspsych.css" rel = "stylesheet">
     </head>
     <body></body>
     <script>
         //Command Center
-        nTrials = 5 //default = 200 
+        nTrials = 10 //default = 200 
+        lastTrial = nTrials-1 //bc iterator starts from 0 (see for loop below)
         ITIDuration= 1000 //default = 1000
-        forwardMaskDuration = 100 //default = 250
-        cueDuration = [2000] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
-        backwardMaskDuration = 0 //default = 100
-        fixationDuration = 100 //default = 200
+        forwardMaskDuration = 250 //default = 250
+        cueDuration = [16,33,67,99,129,166,200] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
+        backwardMaskDuration = 100 //default = 100
+        fixationDuration = 200 //default = 200
         disgustKey = 'd'// When changing, change in prompt for test-phase as well!
         neutralKey = 'n'// When changing, change in prompt for test-phase as well!
 
-
         //Message prompting user to begin presentation
         var timeline = [];
-        var welcomeTrial = {
-            type: 'html-keyboard-response',
-            stimulus: 'Press Key to Begin Experiment',
-            on_finish: function(data){
-        data.iTrial = 1,
-        data.Phase = 'welcomeScreen';
+        var surveyTrial = {
+        type: 'survey-text',
+        questions: [
+        {prompt: "Please Enter Your MTURK Worker ID", placeholder: "1234"}
+        ]
         }
+        timeline.push(surveyTrial)
+
+
+        var videoDemo = {
+                type: 'video-button-response',
+                sources: [
+                    'Demotask1.mp4',
+                ],
+                width: 900,
+                choices: ['I understand the task and the $.02 bonus per correct response'],
+                prompt: '<p>See above for a slowed-down version of the relevent image sequence. Although the last-presented image in the sequence will ALWAYS be a neutral face, the middle-presented image may either be a neutral OR disgust face. Your job is to identify this middle-presented face as being either neutral or disgust</p>'
         }
-        timeline.push(welcomeTrial)
+        timeline.push(videoDemo)
 
         function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -125,9 +139,8 @@
         var correctResponse= correctResponse
         //Define two variable stimuli for the cue, see integration below in "cue_proecure"
 
-        var sampledCueDuration= function(){
-        return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
- 
+        let sampledCueDuration= cueDuration[Math.floor(Math.random() * cueDuration.length)]
+
         //present the cue (16ms)
         var cueImage = {
         type: 'image-keyboard-response',
@@ -175,7 +188,7 @@
         //Ask Subject: Was "hidden face" emotional or neutral
         var test = {
         type: 'html-keyboard-response',
-        stimulus: '<p>Press, d=disgust, n=neutral</p>',
+        stimulus: '<p> What was the emotion of the hidden face? <br> Press, <b>d</b> for <i>disgust face</i> or <b>n</b> for <i>neutral face</i></p>',
         choices: ['d', 'n'],
         on_finish: function(data){
         //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
@@ -185,11 +198,24 @@
         }}
         timeline.push(test)
         
-
+        
+        if(i == lastTrial){
+        var lastTrialPhase = {
+        type: 'html-button-response',
+        stimulus: 'Thank you for completing the task! survey/experiment code: 54123',
+        choices: ['OK'],
+        on_finish: function(data){
+        data.iTrial = i+1,
+        data.Phase = 'debrief';
+        }
+        }
+        timeline.push(lastTrialPhase)
+        }
         jsPsych.init({
             timeline: timeline,
-            on_finish: function(){  jsPsych.data.displayData()}
+            //on_finish: function(){  jsPsych.data.displayData()}
+            on_finish: function(){}
         })
-        }
+    }
     </script>
 </html>

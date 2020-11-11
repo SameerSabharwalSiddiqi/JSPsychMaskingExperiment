@@ -6,6 +6,7 @@
         <script src = "jspsych/plugins/jspsych-image-keyboard-response.js"></script>
         <script src = "jspsych/plugins/jspsych-html-button-response.js"></script>
         <script src = "jspsych/plugins/jspsych-survey-text.js"></script>
+        <script src = "jspsych/plugins/jspsych-image-button-response.js"></script>
         <script src = "jspsych/plugins/jspsych-html-button-response.js"></script>
         <script src = "jspsych/plugins/jspsych-video-button-response.js"></script>
         <script src = "jspsych/plugins/jspsych-fullscreen.js"></script>
@@ -14,11 +15,11 @@
     <body></body>
     <script>
         //Command Center
-        nTrials = 10 //default = 200 
+        nTrials = 150 //default = 200 
         lastTrial = nTrials-1 //bc iterator starts from 0 (see for loop below)
         ITIDuration= 1000 //default = 1000
         forwardMaskDuration = 250 //default = 250
-        cueDuration = [16,33,67,99,129,166,200] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
+        cueDuration = [16,33,49,66,82,104,136] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
         backwardMaskDuration = 100 //default = 100
         fixationDuration = 200 //default = 200
         disgustKey = 'd'// When changing, change in prompt for test-phase as well!
@@ -34,15 +35,21 @@
         }
         timeline.push(surveyTrial)
 
+    var directionsTrial = {
+    type: 'image-button-response',
+    stimulus: 'directions.JPG',
+    choices: ['Continue To Slow-Motion Demonstration'],
+    };
+    timeline.push(directionsTrial)
 
         var videoDemo = {
                 type: 'video-button-response',
                 sources: [
-                    'Demotask1.mp4',
+                    'DemotaskSlowedDownTo30.mp4',
                 ],
-                width: 900,
-                choices: ['I understand the task and the $.02 bonus per correct response'],
-                prompt: '<p>See above for a slowed-down version of the relevent image sequence. Although the last-presented image in the sequence will ALWAYS be a neutral face, the middle-presented image may either be a neutral OR disgust face. Your job is to identify this middle-presented face as being either neutral or disgust</p>'
+                width: 700,
+                choices: ['Continue'],
+                prompt: 'As you can see, the last-presented image in the sequence will always be a neutral face, but the middle-presented image may either be a neutral OR disgust face. This middle image will sometimes be presented so fast as to be "hidden." Your job is to identify it as either being a "neutral face" or a "disgust face"'
         }
         timeline.push(videoDemo)
 
@@ -54,8 +61,52 @@
 
         //Loop through a fleixble number of trials
         for (let i=0; i <nTrials;i++){ 
-                
-        //1000msITI
+        
+        //encouragement 50%
+        if(i==Math.floor(nTrials/4)){
+        var encouragement25 = {
+        type: 'html-keyboard-response',
+        stimulus: 'Good job! 25% Done',
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 2000,
+        on_finish: function(data){
+        data.StimulusDurationSetting = 2000,
+        data.iTrial = i+1,
+        data.Phase = 'encouragement';
+        }
+        }
+        timeline.push(encouragement25)}
+
+        //encouragement 50%
+        if(i==Math.floor(nTrials/2)){
+        var encouragement50 = {
+        type: 'html-keyboard-response',
+        stimulus: '50% Done',
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 1500,
+        on_finish: function(data){
+        data.StimulusDurationSetting = 1500,
+        data.iTrial = i+1,
+        data.Phase = 'encouragement';
+        }
+        }
+        timeline.push(encouragement50)}
+        
+        //encouragement 75%
+        if(i==Math.floor(nTrials/2+nTrials/4)){
+        var encouragement75 = {
+        type: 'html-keyboard-response',
+        stimulus: 'Almost Done! 75% Complete',
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 1500,
+        on_finish: function(data){
+        data.StimulusDurationSetting = 1500,
+        data.iTrial = i+1,
+        data.Phase = 'encouragement';
+        }
+        }
+        timeline.push(encouragement75)
+        }
         var ITI = {
         type: 'html-keyboard-response',
         stimulus: '<div style="font-size:60px;">+</div>',
@@ -90,9 +141,9 @@
         var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)
         //...ensure that the same face is not used were neutral cue face to be selected
         while (randomNeutralCueIdentifier == randomNeutralMaskIdentifier){ 
-            var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)}
+            var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)} //Unfortunately, this WHILE loop does not seem to be preventing the problem
         //}
-        var randomNeutralMaskImage = neutralFacesArr[randomNeutralMaskIdentifier]
+        var randomNeutralMaskImage = neutralFacesArr[randomNeutralMaskIdentifier] 
 
         var NeutralImageCuePath = ['jspsych/neutralFaces',randomNeutralCueImage].join('/')
         var scrambledNeutralImagePath = ['jspsych/scrambledNeutralFaces',randomScrambledNeutralMask].join('/')
@@ -203,7 +254,7 @@
         var lastTrialPhase = {
         type: 'html-button-response',
         stimulus: 'Thank you for completing the task! survey/experiment code: 54123',
-        choices: ['OK'],
+        choices: ['AFTER COPYING CODE, PRESS THIS BUTTON TO COMPLETE'],
         on_finish: function(data){
         data.iTrial = i+1,
         data.Phase = 'debrief';
@@ -218,4 +269,4 @@
         })
     }
     </script>
-</html>
+    </html>

@@ -1,11 +1,22 @@
+function [durationStruct,trialStruct,identifier] = AnalysisFunction(dataCSV)
 clear resultsCSV
-resultsCSV = readtable('sampleData/practiceRun4');
+if ~istable(dataCSV)
+resultsCSV = readtable(dataCSV);
+else
+    resultsCSV = dataCSV;
+end
+%get identifier 
+identifier = resultsCSV(1,:).responses{1};
 nTrials = max(resultsCSV.iTrial);
 nNodes = max(size(resultsCSV));
 iTrial = 1;
 clear trialStruct
 clear durationStruct
 clear durTrials
+confidenceAnalysis = 0;
+if ~isempty(strcmp(resultsCSV.Phase,'QueryConfidence'))
+    confidenceAnalysis = 1;
+end
 for iNode = 1:nNodes
     Phase = resultsCSV.Phase(iNode);
     if strcmp(Phase, 'forwardMask') && isequal(resultsCSV.iTrial(iNode),iTrial)
@@ -17,6 +28,12 @@ for iNode = 1:nNodes
     crntTimePoint = resultsCSV.time_elapsed(iNode); 
     recordedTime = crntTimePoint-lastTimePoint;
     trialStruct(iTrial).recordedTime = recordedTime;
+    end
+    if confidenceAnalysis == 1 %%don't assume that this data has queryconfidence field
+    if strcmp(Phase,'QueryConfidence') && isequal(resultsCSV.iTrial(iNode),iTrial)
+    characterResponse = resultsCSV.CharacterResponse(iNode);
+    trialStruct(iTrial).ConfidenceResponse = str2double(cell2mat(characterResponse));
+    end
     end
     if strcmp(Phase,'Query') && isequal(resultsCSV.iTrial(iNode),iTrial)
     trialStruct(iTrial).EnteredResponse = resultsCSV.CharacterResponse(iNode);
@@ -41,6 +58,13 @@ for iDuration = 1:length(durations)
     confInterval = 1.96*sqrt((performance*(1-performance))/observations);
     durationStruct(iDuration).confInt = confInterval;
     
+    if confidenceAnalysis == 1
+    confidence = mean([durTrials.ConfidenceResponse]);
+    confIntervalForConfResponse = 1.96*sqrt((confidence*(1-confidence))/observations);
+    durationStruct(iDuration).confIntForConfidence = confIntervalForConfResponse;
+    durationStruct(iDuration).meanConfidence = confidence;
+    end
+
     RecordedTimeCol =  ([durTrials.recordedTime])';
     pd = fitdist(RecordedTimeCol,'Normal');
     meanRecordedTime = pd.mu;
@@ -48,30 +72,9 @@ for iDuration = 1:length(durations)
     confIntRecTime = cd(2)-meanRecordedTime;
     durationStruct(iDuration).meanRecordedTime = meanRecordedTime;
     durationStruct(iDuration).recordedConfInt = confIntRecTime;
+    durationStruct(iDuration).recordedStd = std(pd);
     
     clear performance
     clear observations
 end
-
-figure(1)
-successBar = errorbar([durationStruct.cueDuration],[durationStruct.success],[durationStruct.confInt]);
-successBar.LineWidth = 2;
-title('Success by Cue Duration')
-xlabel('Cue Duration in ms')
-ylabel('mean success with Wald-Type Conf Interval')
-ylim([0 1.1])
-yticks([0:.1:1.1])
-grid on
-xlim([0,max([durationStruct.cueDuration])+50])
-
-figure(2)
-timeCalibrationBar = errorbar([durationStruct.cueDuration],[durationStruct.meanRecordedTime],[durationStruct.recordedConfInt]);
-title('Cue Time: Time Set vs. Actual Time Elapsed According to System')
-xlabel('Set Duration in ms')
-ylabel('Actual Duration in ms')
-timeCalibrationBar.LineWidth = 2;
-
-
-resultsCSV.time_elapsed(end)-resultsCSV.time_elapsed(1);
-
-f
+end

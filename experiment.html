@@ -15,15 +15,15 @@
     <body></body>
     <script>
         //Command Center
-        nTrials = 150 //default = 200 
+        nTrials = 50 //default = 200 
         lastTrial = nTrials-1 //bc iterator starts from 0 (see for loop below)
         ITIDuration= 1000 //default = 1000
         forwardMaskDuration = 250 //default = 250
         cueDuration = [16,33,49,66,82,104,136] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
         backwardMaskDuration = 100 //default = 100
         fixationDuration = 200 //default = 200
-        disgustKey = 'd'// When changing, change in prompt for test-phase as well!
-        neutralKey = 'n'// When changing, change in prompt for test-phase as well!
+        disgustKey = '1'// When changing, change in prompt for test-phase as well!
+        neutralKey = '0'// When changing, change in prompt for test-phase as well!
 
         //Message prompting user to begin presentation
         var timeline = [];
@@ -37,7 +37,7 @@
 
     var directionsTrial = {
     type: 'image-button-response',
-    stimulus: 'directions.JPG',
+    stimulus: 'directionsConfidence.JPG',
     choices: ['Continue To Slow-Motion Demonstration'],
     };
     timeline.push(directionsTrial)
@@ -236,11 +236,24 @@
         }
         timeline.push(fixation)
 
+        //Ask Subject: Did you see the "hidden face"
+        var testConfidence = {
+        type: 'html-keyboard-response',
+        stimulus: '<p> Did you see the "hidden" face? Press <b>0</b> if you did <i>not</i>, <b>1</b> if you <i>did</i>. </p>',
+        choices: ['0', '1'],
+        on_finish: function(data){
+        //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
+        data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),
+        data.iTrial = i+1,
+        data.Phase = 'QueryConfidence';
+        }}
+        timeline.push(testConfidence)
+
         //Ask Subject: Was "hidden face" emotional or neutral
         var test = {
         type: 'html-keyboard-response',
-        stimulus: '<p> What was the emotion of the hidden face? <br> Press, <b>d</b> for <i>disgust face</i> or <b>n</b> for <i>neutral face</i></p>',
-        choices: ['d', 'n'],
+        stimulus: '<p> What was the emotion of the hidden face? Go with your gut if you are not certain. <br> Press, <b>0</b> for <i>neutral face</i> or <b>1</b> for <i>disgust face</i></p>',
+        choices: ['0', '1'],
         on_finish: function(data){
         //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
         data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),
@@ -254,7 +267,7 @@
         var lastTrialPhase = {
         type: 'html-button-response',
         stimulus: 'Thank you for completing the task! survey/experiment code: 54123',
-        choices: ['AFTER COPYING CODE, PRESS THIS BUTTON TO COMPLETE'],
+        choices: ['AFTER COPYING CODE, PRESS THIS BUTTON TO COMPLETE!'],
         on_finish: function(data){
         data.iTrial = i+1,
         data.Phase = 'debrief';

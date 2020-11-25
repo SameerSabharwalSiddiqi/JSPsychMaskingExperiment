@@ -37,21 +37,21 @@
 
     var directionsTrial = {
     type: 'image-button-response',
-    stimulus: 'directionsConfidence.JPG',
-    choices: ['Continue To Slow-Motion Demonstration'],
+    stimulus: 'directionsOnlyDisgust.JPG',
+    choices: ['Proceed to Task'],
     };
     timeline.push(directionsTrial)
 
-        var videoDemo = {
-                type: 'video-button-response',
-                sources: [
-                    'DemotaskSlowedDownTo30.mp4',
-                ],
-                width: 700,
-                choices: ['Continue'],
-                prompt: 'As you can see, the last-presented image in the sequence will always be a neutral face, but the middle-presented image may either be a neutral OR disgust face. This middle image will sometimes be presented so fast as to be "hidden." Your job is to identify it as either being a "neutral face" or a "disgust face"'
-        }
-        timeline.push(videoDemo)
+        // var videoDemo = {
+        //         type: 'video-button-response',
+        //         sources: [
+        //             'DemotaskSlowedDownTo30.mp4',
+        //         ],
+        //         width: 700,
+        //         choices: ['Continue'],
+        //         prompt: 'On each trial, there will two faces presented in rapid succession. Your job is to answer if ONE of the faces had a disugsted expression (or, alternatively, if both faces had a neutral expression)"'
+        // }
+        // timeline.push(videoDemo)
 
         function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -236,23 +236,23 @@
         }
         timeline.push(fixation)
 
-        //Ask Subject: Did you see the "hidden face"
-        var testConfidence = {
-        type: 'html-keyboard-response',
-        stimulus: '<p> Did you see the "hidden" face? Press <b>0</b> if you did <i>not</i>, <b>1</b> if you <i>did</i>. </p>',
-        choices: ['0', '1'],
-        on_finish: function(data){
-        //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
-        data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),
-        data.iTrial = i+1,
-        data.Phase = 'QueryConfidence';
-        }}
-        timeline.push(testConfidence)
+        // //Ask Subject: Did you see the "hidden face"
+        // var testConfidence = {
+        // type: 'html-keyboard-response',
+        // stimulus: '<p> Did you see the "hidden" face? Press <b>0</b> if you did <i>not</i>, <b>1</b> if you <i>did</i>. </p>',
+        // choices: ['0', '1'],
+        // on_finish: function(data){
+        // //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
+        // data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),
+        // data.iTrial = i+1,
+        // data.Phase = 'QueryConfidence';
+        // }}
+        // timeline.push(testConfidence)
 
         //Ask Subject: Was "hidden face" emotional or neutral
         var test = {
         type: 'html-keyboard-response',
-        stimulus: '<p> What was the emotion of the hidden face? Go with your gut if you are not certain. <br> Press, <b>0</b> for <i>neutral face</i> or <b>1</b> for <i>disgust face</i></p>',
+        stimulus: '<p> Did you see a disgust face? Press, <br></br> <b>0</b> if <i>no</i>, <br></br> <b>1</b> if <i>yes<i>',
         choices: ['0', '1'],
         on_finish: function(data){
         //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
@@ -266,7 +266,7 @@
         if(i == lastTrial){
         var lastTrialPhase = {
         type: 'html-button-response',
-        stimulus: 'Thank you for completing the task! survey/experiment code: 54123',
+        stimulus: 'Thank you for completing the task! survey/experiment code: 98390',
         choices: ['AFTER COPYING CODE, PRESS THIS BUTTON TO COMPLETE!'],
         on_finish: function(data){
         data.iTrial = i+1,

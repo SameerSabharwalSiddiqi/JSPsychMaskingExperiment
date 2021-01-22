@@ -14,7 +14,7 @@ clear trialStruct
 clear durationStruct
 clear durTrials
 confidenceAnalysis = 0;
-if ~isempty(strcmp(resultsCSV.Phase,'QueryConfidence'))
+if ~isempty(find(strcmp(resultsCSV.Phase,'QueryConfidence')))
     confidenceAnalysis = 1;
 end
 for iNode = 1:nNodes
@@ -58,6 +58,33 @@ for iDuration = 1:length(durations)
     confInterval = 1.96*sqrt((performance*(1-performance))/observations);
     durationStruct(iDuration).confInt = confInterval;
     
+    %Also calculate hit rate etc.
+        for iTrial = 1:max(size(durTrials))
+        if strcmp(durTrials(iTrial).CorrectResponse,'1')
+            durTrials(iTrial).oneForDisgustTrial = 1;
+        elseif strcmp(durTrials(iTrial).CorrectResponse,'0')
+            durTrials(iTrial).oneForDisgustTrial = 0;
+        end
+    end
+    durTable = struct2table(durTrials);
+    disgustTable = durTable(durTable.oneForDisgustTrial==1,:);
+    disgustStruct = table2struct(disgustTable);
+    neutralTable = durTable(durTable.oneForDisgustTrial==0,:);
+    neutralStruct = table2struct(neutralTable);
+    hitRate = nanmean(disgustTable.Success);
+    falseAlarmRate = 1- nanmean(neutralTable.Success);
+    dPrime = hitRate - falseAlarmRate;
+    durationStruct(iDuration).dPrime = dPrime;
+    durationStruct(iDuration).falseAlarmRate = falseAlarmRate;
+    durationStruct(iDuration).hitRate = hitRate;
+    confIntervalHitRate = 1.96*sqrt((hitRate*(1-hitRate))/length(disgustStruct));
+    durationStruct(iDuration).hitRateConfInt = confIntervalHitRate;
+        confIntervalfalseAlarmRate = 1.96*sqrt((falseAlarmRate*(1-falseAlarmRate))/length(neutralStruct));
+    durationStruct(iDuration).FalarmConfInt = confIntervalfalseAlarmRate;
+   %Ending of false alarm/hit analysis 
+    
+    %Ending of hit rate analysis
+    
     if confidenceAnalysis == 1
     confidence = mean([durTrials.ConfidenceResponse]);
     confIntervalForConfResponse = 1.96*sqrt((confidence*(1-confidence))/observations);
@@ -73,6 +100,7 @@ for iDuration = 1:length(durations)
     durationStruct(iDuration).meanRecordedTime = meanRecordedTime;
     durationStruct(iDuration).recordedConfInt = confIntRecTime;
     durationStruct(iDuration).recordedStd = std(pd);
+ 
     
     clear performance
     clear observations

@@ -1,5 +1,6 @@
 clear all
 %File selection
+confidenceAnalysis = 0;
 [file,path] = uigetfile('*.csv',...
    'Select One or More Excel Files', ...
    'MultiSelect', 'on');
@@ -75,16 +76,18 @@ end
         xlim([0,max([durationStruct.cueDuration])+50])
         %yline(0.5,'r','Linewidth',2)
         hold on 
+        if confidenceAnalysis == 1
         confidenceBar = errorbar([durationStruct.cueDuration],[durationStruct.meanConfidence],[durationStruct.confIntForConfidence],'r');
         confidenceBar.LineWidth = 2;
         if runCntr == 1
         legend('Performance','Confidence','Location','southeast','Orientation','horizontal');
         end
+        end
 
             %computer_synchrony
                         figure(4)
             hold on
-            subplot(2,5,runCntr) %SUBPLOT - currently set for 12 runs!
+            subplot(2,5,runCntr) %SUBPLOT - currently set for 10 runs!
             timeCalibrationBar = errorbar([durationStruct.cueDuration],[durationStruct.meanRecordedTime],[durationStruct.recordedConfInt]);
                     title(identifier)
                     xlabel('set cue time')
@@ -95,13 +98,34 @@ end
             runStruct(iRun).RecordedStd = mean([durationStruct.recordedStd]);
             runStruct(iRun).TimeSpentOnVideo = subTable.time_elapsed(3)-subTable.time_elapsed(2);
             runStruct(iRun).subTableStruct = trialStruct;
+            
+            %Hit/FA rate graph
+            figure(22)
+            subplot(2,5,runCntr)
+            
+        hitRateBar = errorbar([durationStruct.cueDuration],[durationStruct.hitRate],[durationStruct.hitRateConfInt]);
+        hitRateBar.LineWidth = 2;
+        title(identifier)
+        xlabel('Cue Duration in ms')
+        ylabel('Probability')
+        ylim([0 1.1])
+        yticks([0:.1:1.1])
+        grid on
+        xlim([0,max([durationStruct.cueDuration])+50])
+        hold on 
+        faRateBar = errorbar([durationStruct.cueDuration],[durationStruct.falseAlarmRate],[durationStruct.FalarmConfInt]);
+        faRateBar.LineWidth = 2;
+         
+            if runCntr == 1 
+                    legend('hitRate','FA Rate','Location','southeast','Orientation','horizontal');
             else
+            end
             end
         end
         %aggregate table
     figure(1)
     aggStruct = horzcat(runStruct.subTableStruct);
-    durationStruct = aggregateAnalysisFunction(aggStruct);
+    durationStruct = aggregateAnalysisFunction(aggStruct,confidenceAnalysis);
         successBar = errorbar([durationStruct.cueDuration],[durationStruct.success],[durationStruct.confInt]);
         successBar.LineWidth = 2;
         title('aggregate data')
@@ -113,11 +137,22 @@ end
         xlim([0,max([durationStruct.cueDuration])+50])
         %yline(0.5,'r','Linewidth',2)
         hold on 
+        if confidenceAnalysis == 1
         confidenceBar = errorbar([durationStruct.cueDuration],[durationStruct.meanConfidence],[durationStruct.confIntForConfidence],'r');
         confidenceBar.LineWidth = 2;
         legend('Performance','Confidence','Location','southeast');
+        end
         
+     figure(2)
+     AgghitRateBar = errorbar([durationStruct.cueDuration],[durationStruct.hitRate],[durationStruct.hitRateConfInt]);
+     AgghitRateBar.LineWidth = 2;
+     hold on 
+     AggfaRateBar = errorbar([durationStruct.cueDuration],[durationStruct.falseAlarmRate],[durationStruct.FalarmConfInt]);
+     AggfaRateBar.LineWidth = 2;
+     legend('hit rate','false alarm rate')
+     
     
+             
     %%bias analysis 
     for iTrial = 1:max(size(aggStruct))
         if strcmp(aggStruct(iTrial).CorrectResponse,'1')
@@ -135,28 +170,39 @@ end
     neutralStruct = table2struct(neutralTable);
     figure(10)
     subplot(1,2,1)
-    durationStructdisgust = aggregateAnalysisFunction(disgustStruct);
+    durationStructdisgust = aggregateAnalysisFunction(disgustStruct,confidenceAnalysis);
     successBarDisgust = errorbar([durationStructdisgust.cueDuration],[durationStructdisgust.success],[durationStructdisgust.confInt]);
     successBarDisgust.LineWidth = 2;
     successBarDisgust.Color = 'r';
-     legend('disgustTrials Performance','disgustTrials Confidence');
+    if confidenceAnalysis == 0
+        legend('disgustTrials Performance')
+    end
 
     hold on 
+    if confidenceAnalysis == 1
+             legend('disgustTrials Performance','disgustTrials Confidence');
+
     confidenceBarDisgust = errorbar([durationStructdisgust.cueDuration],[durationStructdisgust.meanConfidence],[durationStructdisgust.confIntForConfidence]);
     confidenceBarDisgust.LineWidth = 2;
     confidenceBarDisgust.Color = 'r';
-    confidenceBarDisgust.LineStyle = ':';    
+    confidenceBarDisgust.LineStyle = ':';  
+    end
     %Neutral Subplot
     subplot(1,2,2)
     hold on 
-    durationStructNeutral = aggregateAnalysisFunction(neutralStruct);
+    durationStructNeutral = aggregateAnalysisFunction(neutralStruct,confidenceAnalysis);
     successBarNeutral = errorbar([durationStructNeutral.cueDuration],[durationStructNeutral.success],[durationStructNeutral.confInt]);
     successBarNeutral.LineWidth = 2;
     successBarNeutral.Color = 'b';
+        if confidenceAnalysis == 0
+        legend('Neutral Trials Performance')
+    end
+    if confidenceAnalysis == 1
     confidenceBarNeutral = errorbar([durationStructNeutral.cueDuration],[durationStructNeutral.meanConfidence],[durationStructNeutral.confIntForConfidence]);
     confidenceBarNeutral.LineWidth = 2;
     confidenceBarNeutral.Color = 'b';
     confidenceBarNeutral.LineStyle = ':'; 
+    end
     legend('neutralTrials Performance','neutralTrials Confidence');
         xlabel('Cue Duration in ms')
         ylim([0 1.1])

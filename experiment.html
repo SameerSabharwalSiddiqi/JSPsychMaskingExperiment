@@ -261,7 +261,8 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
             choices: ['View Directions for Step Two'],
             on_finish: function(data){
         data.iTrial = 1,
-        data.Phase = 'directions'
+        data.Phase = 'IntroDirections1'
+        data.ExperimentPhase ='break'
         }}
         timeline.push(DirectionsStepOne)
 
@@ -271,7 +272,8 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
             choices: ['Confirm that I am aged 18-65, and continue on to Practice Set'],
             on_finish: function(data){
         data.iTrial = 1,
-        data.Phase = 'directions'
+        data.Phase = 'IntroDirections2'
+        data.ExperimentPhase = 'break'
         }}
         timeline.push(DirectionsStepTwo)
 
@@ -300,7 +302,7 @@ for(let i=0;i<nPracticeMemorizationTrials;i++){
         data.iTrial = i+1,
         data.Phase = 'IntactFace';
         data.StimulusDurationSetting = PresentationDuration
-        data.ExperimentPhase = 'Memorization'
+        data.ExperimentPhase = 'Practice'
         }
     }
     timeline.push(faceMemorization)
@@ -313,8 +315,8 @@ for(let i=0;i<nPracticeMemorizationTrials;i++){
         on_finish: function(data){
         data.iTrial = i+1,
         data.Phase = 'ITI';
-        data.StimulusDurationSetting = 
-        data.ExperimentPhase = 'Memorization'
+        data.StimulusDurationSetting = ITIDuration
+        data.ExperimentPhase = 'Practice'
         }
         }
         timeline.push(fixation)
@@ -334,6 +336,7 @@ var directionsBeforeTest = {
             on_finish: function(data){
         data.iTrial = 1,
         data.Phase = 'directions'
+        data.ExperimentPhase ='break'
         }}
         timeline.push(directionsBeforeTest)
 
@@ -423,7 +426,6 @@ var directionsBeforeTest = {
             var correctResponse = neutralKey}
             else{
             data.correctResponse = disgustKey
-            data.ExperimentPhase = 'Test'
             data= {test_part: 'test', correct_response: disgustKey}
             var correctResponse = disgustKey}
         }
@@ -568,22 +570,20 @@ var directionsBeforeTest = {
         choices: ['Continue'],
         on_finish: function(data){
         data.iTrial = i+1,
-        data.ExperimentPhase = 'practice',
+        data.ExperimentPhase = 'Practice',
         data.Phase = 'feedback';}}
-        timeline.push(feedback)
+        timeline.push(feedback)}
       
-        if(i == lastTrial){
-        var lastTrialPhase = {
+        var recapDirections = {
         type: 'image-button-response',
         stimulus: 'directionsMemoryAssociation3.JPG',
         choices: ['Continue On to Full Set'],
         on_finish: function(data){
         data.iTrial = i+1,
-        data.Phase = 'debriefAfterPractice',
-        data.ExperimentPhase = 'Practice';
-        }
-        }
-        timeline.push(lastTrialPhase) }}
+        data.Phase = 'DirectionsBeforeActualTEst',
+        data.ExperimentPhase = 'Break';
+        }}
+        timeline.push(recapDirections) 
     
 
 ////////////////////////////MEMORIZATION PHASE///////////////////////////////////////////
@@ -624,7 +624,7 @@ for(let i=0;i<nMemorizationTrials;i++){
         data.iTrial = i+1,
         data.Phase = 'ITI';
         data.StimulusDurationSetting = 
-        data.ExperimentPhase = 'test'
+        data.ExperimentPhase = 'Memorization'
         data.Phase = 'fixation'
         }
         }
@@ -832,6 +832,9 @@ i = []
         data.iTrial = i+1,
         data.ExperimentPhase = 'Test'
         data.Phase = 'ConfidenceQuery'
+        data.rearranged = rearranged
+        data.Face = faceRecall
+        data.Name = nameRecall
         if(data.response > 50){
             data.didSubjectEnterRearranged= 1}
         else if(data.response < 50){
@@ -1041,7 +1044,7 @@ i = []
         data.ExperimentPhase = 'Calibration',
         data.Phase = 'Query';
         }}
-        timeline.push(test)}
+        timeline.push(test)} 
 
         var Debriefing = {
             type: 'image-button-response',

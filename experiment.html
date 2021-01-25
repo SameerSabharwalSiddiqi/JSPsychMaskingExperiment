@@ -20,16 +20,18 @@
 //Command Center
 
     //Part1: The initial Memory Phase 
-    var nPracticeFaceNamesForEachGender = 4 //just for practice section
+    var nPracticeFaceNamesForEachGender =2 //just for practice section
         practiceMinimumFaceNames = nPracticeFaceNamesForEachGender
-    var minimumFaceNamesForEachGender = 4 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
+    var minimumFaceNamesForEachGender = 64 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
         minimumFaceNames = minimumFaceNamesForEachGender //just to make the variable's definition more explicit up here, and more concise in the actual body of code
-    postCalibrationTrials = 1 //Number of trials in which we ask the subject if she saw a "disgust" face
+    postCalibrationTrials = 50 //Number of trials in which we ask the subject if she saw a "disgust" face
     ITIDurationRecall = 500     //Default = 500
     PresentationDuration = 5000//Default = 5000
     nMemorizationTrials = (minimumFaceNames*2) //Default: (minimumFaceNames*2)
+        nPracticeMemorizationTrials = (practiceMinimumFaceNames*2)
     //Part2: Recall/Masked-Affective Phase
     nTrialsRecall = (minimumFaceNames*2) //Default: (minimumFaceNames*2)-2
+        nPracticeRecallTrials = (practiceMinimumFaceNames*2)
     lastTrial = nTrialsRecall-1 //bc iterator starts from 0 (see for loop below)
     ITIDuration= 1000 //default = 1000
     forwardMaskDuration = 250 //default = 250
@@ -219,7 +221,7 @@ for (var i=0; i<(minimumFaceNames*2); i++) {
 
 var hybridPracticeArray = [];
 var lastPracticeTrial = practiceMinimumFaceNames*2-1
-for (var i =0; i<(minimumFaceNames*2);i++){
+for (var i =0; i<(practiceMinimumFaceNames*2);i++){
     if(isEven(i)){
         hybridPracticeArray[i] = {
             name: faceNamePairsPractice[i].name,
@@ -237,6 +239,8 @@ for (var i =0; i<(minimumFaceNames*2);i++){
 //Now do a final shuffle to ensure that male and female faces are interspersed 
 var hybridArray = shuffle(hybridArray)
 var faceNamePairs = shuffle(faceNamePairs)
+var faceNamePairsPractice = shuffle(faceNamePairsPractice)
+var hybridPracticeArray = shuffle(hybridPracticeArray)
         //don't bother shuffling the practice array
 
 /////////////////////////////  BEGIN EXPERIMENT  ////////////////////////////////////////////
@@ -272,7 +276,7 @@ var faceNamePairs = shuffle(faceNamePairs)
         timeline.push(DirectionsStepTwo)
 
 ////////////////////////////  PRACTICE PHASE  ///////////////////////////////////////////////
-for(let i=0;i<nMemorizationTrials;i++){
+for(let i=0;i<nPracticeMemorizationTrials;i++){
     var face = faceNamePairsPractice[i].face;// change to LET instead of VAR after debugging
     var name = faceNamePairsPractice[i].name; //change to LET instead of VAR after debugging
     let practiceHeader = '<p><b> Practice Set </b></p>'
@@ -336,7 +340,7 @@ var directionsBeforeTest = {
 ////////////////////////////// PRACTICE RECALL PHASE//////////////////////////////////////////////////////////
 
         //Loop through a fleixble number of trials
-        for (let i=0; i <nTrialsRecall;i++){ 
+        for (let i=0; i <nPracticeRecallTrials;i++){ 
                 
         //1000msITI
         var ITI = {
@@ -486,7 +490,7 @@ var directionsBeforeTest = {
         let practiceHeader = '<p><b> Practice Set </b></p>'
         let str1 = '<img src='
         let str2 = 'height="250px">'
-        let str3 = ',</br>'
+        let str3 = '</br>'
         let cfdDirectory = 'jspsych/CFDfaces/'
         let faceDirRecall = cfdDirectory.concat(faceRecall)
         faceDirRecall = "'"+faceDirRecall+"'"
@@ -557,9 +561,9 @@ var directionsBeforeTest = {
             return "You are Incorrect. You called a Rearranged Pair Intact";
         }
         else if(rearrangedEntry==2 && rearrangedStim ==0)
-        {return "<p>You responded that you were not sure.</p> <p>Correct Answer: The pair was intact.</p>"}
+        {return "<p>You responded that you were not sure.</p> <p>The pair was intact.</p>"}
         else if(rearrangedEntry==2 && rearrangedStim ==1){
-            return "<p>You responded that you were not sure.</p> <p>Correct Answer: The pair was rearranged.</p>"
+            return "<p>You responded that you were not sure.</p> <p>The pair was rearranged.</p>"
         }},
         choices: ['Continue'],
         on_finish: function(data){
@@ -570,8 +574,8 @@ var directionsBeforeTest = {
       
         if(i == lastTrial){
         var lastTrialPhase = {
-        type: 'html-button-response',
-        stimulus: 'Thank you for completing going over this practice set.',
+        type: 'image-button-response',
+        stimulus: 'directionsMemoryAssociation3.JPG',
         choices: ['Continue On to Full Set'],
         on_finish: function(data){
         data.iTrial = i+1,
@@ -588,7 +592,7 @@ for(let i=0;i<nMemorizationTrials;i++){
     var name = faceNamePairs[i].name; //change to LET instead of VAR after debugging
     let str1 = '<img src='
     let str2 = ' height="250px">'
-    let str3 = ',</br>'
+    let str3 = '</br>'
     let cfdDirectory = 'jspsych/CFDfaces/'
     let faceDir = cfdDirectory.concat(face)
     faceDir = "'"+faceDir+"'"
@@ -1037,7 +1041,7 @@ i = []
         data.ExperimentPhase = 'Calibration',
         data.Phase = 'Query';
         }}
-        timeline.push(test)
+        timeline.push(test)}
 
         var Debriefing = {
             type: 'image-button-response',
@@ -1056,7 +1060,7 @@ i = []
             // on_finish: function(){  jsPsych.data.displayData()}
             on_finish: function(){}
         })
-        }
+        
     </script>
     
     </html>

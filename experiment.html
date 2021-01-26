@@ -2,7 +2,7 @@
 <html>
     <head>
         <script src = "jspsych/jspsych.js"></script>
-        <script src = "jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src = "jspsych/plugins/jspsych-htm l-keyboard-response.js"></script>
         <script src = "jspsych/plugins/jspsych-image-keyboard-response.js"></script>
         <script src = "jspsych/plugins/jspsych-html-button-response.js"></script>
         <script src = "jspsych/plugins/jspsych-survey-text.js"></script>
@@ -22,9 +22,9 @@
     //Part1: The initial Memory Phase 
     var nPracticeFaceNamesForEachGender =2 //just for practice section
         practiceMinimumFaceNames = nPracticeFaceNamesForEachGender
-    var minimumFaceNamesForEachGender = 64 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
+    var minimumFaceNamesForEachGender = 2 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
         minimumFaceNames = minimumFaceNamesForEachGender //just to make the variable's definition more explicit up here, and more concise in the actual body of code
-    postCalibrationTrials = 50 //Number of trials in which we ask the subject if she saw a "disgust" face
+    postCalibrationTrials = 4 //Number of trials in which we ask the subject if she saw a "disgust" face
     ITIDurationRecall = 500     //Default = 500
     PresentationDuration = 5000//Default = 5000
     nMemorizationTrials = (minimumFaceNames*2) //Default: (minimumFaceNames*2)
@@ -35,7 +35,7 @@
     lastTrial = nTrialsRecall-1 //bc iterator starts from 0 (see for loop below)
     ITIDuration= 1000 //default = 1000
     forwardMaskDuration = 250 //default = 250
-    cueDuration = [16] //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
+    cueDuration = 16 //Include brackets! default = [16]. For variable durations, enter an array (e.g., [16,33,66])
     backwardMaskDuration = 100 //default = 100
     fixationDuration = 1000 //default = 200
     disgustKey = 'd'// When changing, change in prompt for test-phase as well!
@@ -243,6 +243,63 @@ var faceNamePairsPractice = shuffle(faceNamePairsPractice)
 var hybridPracticeArray = shuffle(hybridPracticeArray)
         //don't bother shuffling the practice array
 
+
+////////////////////////////  Creation of "PreloadedMaskArray" ///////////////////////////////////
+        //Loop through a fleixble number of trials
+        var preloadedMaskImages = []
+        for (let i=0; i <nTrialsRecall;i++){
+        //Select cue Images (do this prior to cue-phase)
+        var neutralFacesArr= ['AF01NES.JPG', 'AF02NES.JPG', 'AF03NES.JPG', 'AF04NES.JPG', 'AF05NES.JPG', 'AF06NES.JPG', 'AF07NES.JPG', 'AF08NES.JPG', 'AF09NES.JPG', 'AF10NES.JPG', 'AF11NES.JPG', 'AF12NES.JPG', 'AF13NES.JPG', 'AF14NES.JPG', 'AF15NES.JPG', 'AF16NES.JPG', 'AF17NES.JPG', 'AF18NES.JPG', 'AF19NES.JPG', 'AF20NES.JPG', 'AF21NES.JPG', 'AF22NES.JPG', 'AF23NES.JPG', 'AF24NES.JPG', 'AF25NES.JPG', 'AF26NES.JPG', 'AF27NES.JPG', 'AF28NES.JPG', 'AF29NES.JPG', 'AF30NES.JPG', 'AF31NES.JPG', 'AF32NES.JPG', 'AF33NES.JPG', 'AF34NES.JPG', 'AF35NES.JPG', 'AM01NES.JPG', 'AM02NES.JPG', 'AM03NES.JPG', 'AM04NES.JPG', 'AM05NES.JPG', 'AM06NES.JPG', 'AM07NES.JPG', 'AM08NES.JPG', 'AM09NES.JPG', 'AM10NES.JPG', 'AM11NES.JPG', 'AM13NES.JPG', 'AM14NES.JPG', 'AM15NES.JPG', 'AM17NES.JPG', 'AM18NES.JPG', 'AM21NES.JPG', 'AM22NES.JPG', 'AM23NES.JPG', 'AM25NES.JPG', 'AM26NES.JPG', 'AM27NES.JPG', 'AM28NES.JPG', 'AM29NES.JPG', 'AM30NES.JPG', 'AM31NES.JPG', 'AM32NES.JPG', 'AM33NES.JPG', 'AM34NES.JPG', 'AM35NES.JPG', 'BF01NES.JPG', 'BF02NES.JPG', 'BF03NES.JPG', 'BF04NES.JPG', 'BF05NES.JPG', 'BF06NES.JPG', 'BF07NES.JPG', 'BF08NES.JPG', 'BF09NES.JPG', 'BF10NES.JPG', 'BF11NES.JPG', 'BF12NES.JPG', 'BF13NES.JPG', 'BF14NES.JPG', 'BF15NES.JPG', 'BF16NES.JPG', 'BF17NES.JPG', 'BF18NES.JPG', 'BF19NES.JPG', 'BF20NES.JPG', 'BF21NES.JPG', 'BF22NES.JPG', 'BF23NES.JPG', 'BF24NES.JPG', 'BF25NES.JPG', 'BF26NES.JPG', 'BF27NES.JPG', 'BF28NES.JPG', 'BF29NES.JPG', 'BF30NES.JPG', 'BF31NES.JPG', 'BF32NES.JPG', 'BF33NES.JPG', 'BF34NES.JPG', 'BF35NES.JPG', 'BM01NES.JPG', 'BM02NES.JPG', 'BM03NES.JPG', 'BM04NES.JPG', 'BM05NES.JPG', 'BM06NES.JPG', 'BM07NES.JPG', 'BM08NES.JPG', 'BM09NES.JPG', 'BM10NES.JPG', 'BM11NES.JPG', 'BM12NES.JPG', 'BM13NES.JPG', 'BM14NES.JPG', 'BM16NES.JPG', 'BM21NES.JPG', 'BM22NES.JPG', 'BM23NES.JPG', 'BM24NES.JPG', 'BM25NES.JPG', 'BM26NES.JPG', 'BM27NES.JPG', 'BM28NES.JPG', 'BM30NES.JPG', 'BM31NES.JPG', 'BM32NES.JPG', 'BM33NES.JPG', 'BM34NES.JPG', 'BM35NES.JPG']
+        var neutralFacesLength = neutralFacesArr.length
+        var randomNeutralCueIdentifier = getRandomInt(1,neutralFacesLength)
+        var randomNeutralCueImage = neutralFacesArr[randomNeutralCueIdentifier]
+        //Using same number identifier as cue, select neutral scrambled mask
+        var scrambledNeutralFacesArr = ['scrambledAF01NES.JPG', 'scrambledAF02NES.JPG', 'scrambledAF03NES.JPG', 'scrambledAF04NES.JPG', 'scrambledAF05NES.JPG', 'scrambledAF06NES.JPG', 'scrambledAF07NES.JPG', 'scrambledAF08NES.JPG', 'scrambledAF09NES.JPG', 'scrambledAF10NES.JPG', 'scrambledAF11NES.JPG', 'scrambledAF12NES.JPG', 'scrambledAF13NES.JPG', 'scrambledAF14NES.JPG', 'scrambledAF15NES.JPG', 'scrambledAF16NES.JPG', 'scrambledAF17NES.JPG', 'scrambledAF18NES.JPG', 'scrambledAF19NES.JPG', 'scrambledAF20NES.JPG', 'scrambledAF21NES.JPG', 'scrambledAF22NES.JPG', 'scrambledAF23NES.JPG', 'scrambledAF24NES.JPG', 'scrambledAF25NES.JPG', 'scrambledAF26NES.JPG', 'scrambledAF27NES.JPG', 'scrambledAF28NES.JPG', 'scrambledAF29NES.JPG', 'scrambledAF30NES.JPG', 'scrambledAF31NES.JPG', 'scrambledAF32NES.JPG', 'scrambledAF33NES.JPG', 'scrambledAF34NES.JPG', 'scrambledAF35NES.JPG', 'scrambledAM01NES.JPG', 'scrambledAM02NES.JPG', 'scrambledAM03NES.JPG', 'scrambledAM04NES.JPG', 'scrambledAM05NES.JPG', 'scrambledAM06NES.JPG', 'scrambledAM07NES.JPG', 'scrambledAM08NES.JPG', 'scrambledAM09NES.JPG', 'scrambledAM10NES.JPG', 'scrambledAM11NES.JPG', 'scrambledAM13NES.JPG', 'scrambledAM14NES.JPG', 'scrambledAM15NES.JPG', 'scrambledAM17NES.JPG', 'scrambledAM18NES.JPG', 'scrambledAM21NES.JPG', 'scrambledAM22NES.JPG', 'scrambledAM23NES.JPG', 'scrambledAM25NES.JPG', 'scrambledAM26NES.JPG', 'scrambledAM27NES.JPG', 'scrambledAM28NES.JPG', 'scrambledAM29NES.JPG', 'scrambledAM30NES.JPG', 'scrambledAM31NES.JPG', 'scrambledAM32NES.JPG', 'scrambledAM33NES.JPG', 'scrambledAM34NES.JPG', 'scrambledAM35NES.JPG', 'scrambledBF01NES.JPG', 'scrambledBF02NES.JPG', 'scrambledBF03NES.JPG', 'scrambledBF04NES.JPG', 'scrambledBF05NES.JPG', 'scrambledBF06NES.JPG', 'scrambledBF07NES.JPG', 'scrambledBF08NES.JPG', 'scrambledBF09NES.JPG', 'scrambledBF10NES.JPG', 'scrambledBF11NES.JPG', 'scrambledBF12NES.JPG', 'scrambledBF13NES.JPG', 'scrambledBF14NES.JPG', 'scrambledBF15NES.JPG', 'scrambledBF16NES.JPG', 'scrambledBF17NES.JPG', 'scrambledBF18NES.JPG', 'scrambledBF19NES.JPG', 'scrambledBF20NES.JPG', 'scrambledBF21NES.JPG', 'scrambledBF22NES.JPG', 'scrambledBF23NES.JPG', 'scrambledBF24NES.JPG', 'scrambledBF25NES.JPG', 'scrambledBF26NES.JPG', 'scrambledBF27NES.JPG', 'scrambledBF28NES.JPG', 'scrambledBF29NES.JPG', 'scrambledBF30NES.JPG', 'scrambledBF31NES.JPG', 'scrambledBF32NES.JPG', 'scrambledBF33NES.JPG', 'scrambledBF34NES.JPG', 'scrambledBF35NES.JPG', 'scrambledBM01NES.JPG', 'scrambledBM02NES.JPG', 'scrambledBM03NES.JPG', 'scrambledBM04NES.JPG', 'scrambledBM05NES.JPG', 'scrambledBM06NES.JPG', 'scrambledBM07NES.JPG', 'scrambledBM08NES.JPG', 'scrambledBM09NES.JPG', 'scrambledBM10NES.JPG', 'scrambledBM11NES.JPG', 'scrambledBM12NES.JPG', 'scrambledBM13NES.JPG', 'scrambledBM14NES.JPG', 'scrambledBM16NES.JPG', 'scrambledBM21NES.JPG', 'scrambledBM22NES.JPG', 'scrambledBM23NES.JPG', 'scrambledBM24NES.JPG', 'scrambledBM25NES.JPG', 'scrambledBM26NES.JPG', 'scrambledBM27NES.JPG', 'scrambledBM28NES.JPG', 'scrambledBM30NES.JPG', 'scrambledBM31NES.JPG', 'scrambledBM32NES.JPG', 'scrambledBM33NES.JPG', 'scrambledBM34NES.JPG', 'scrambledBM35NES.JPG']
+        var randomScrambledNeutralMask = scrambledNeutralFacesArr[randomNeutralCueIdentifier]
+
+        var disgustFacesArr = ['AF01DIS.JPG', 'AF02DIS.JPG', 'AF03DIS.JPG', 'AF04DIS.JPG', 'AF05DIS.JPG', 'AF06DIS.JPG', 'AF07DIS.JPG', 'AF09DIS.JPG', 'AF10DIS.JPG', 'AF11DIS.JPG', 'AF12DIS.JPG', 'AF13DIS.JPG', 'AF14DIS.JPG', 'AF15DIS.JPG', 'AF16DIS.JPG', 'AF17DIS.JPG', 'AF19DIS.JPG', 'AF20DIS.JPG', 'AF21DIS.JPG', 'AF22DIS.JPG', 'AF23DIS.JPG', 'AF24DIS.JPG', 'AF25DIS.JPG', 'AF26DIS.JPG', 'AF27DIS.JPG', 'AF28DIS.JPG', 'AF29DIS.JPG', 'AF30DIS.JPG', 'AF31DIS.JPG', 'AF32DIS.JPG', 'AF33DIS.JPG', 'AF34DIS.JPG', 'AF35DIS.JPG', 'AM01DIS.JPG', 'AM02DIS.JPG', 'AM03DIS.JPG', 'AM04DIS.JPG', 'AM05DIS.JPG', 'AM06DIS.JPG', 'AM07DIS.JPG', 'AM08DIS.JPG', 'AM09DIS.JPG', 'AM10DIS.JPG', 'AM11DIS.JPG', 'AM12DIS.JPG', 'AM13DIS.JPG', 'AM14DIS.JPG', 'AM15DIS.JPG', 'AM16DIS.JPG', 'AM17DIS.JPG', 'AM18DIS.JPG', 'AM19DIS.JPG', 'AM20DIS.JPG', 'AM21DIS.JPG', 'AM22DIS.JPG', 'AM23DIS.JPG', 'AM24DIS.JPG', 'AM25DIS.JPG', 'AM27DIS.JPG', 'AM28DIS.JPG', 'AM29DIS.JPG', 'AM30DIS.JPG', 'AM31DIS.JPG', 'AM32DIS.JPG', 'AM33DIS.JPG', 'AM34DIS.JPG', 'AM35DIS.JPG', 'BF01DIS.JPG', 'BF02DIS.JPG', 'BF03DIS.JPG', 'BF04DIS.JPG', 'BF05DIS.JPG', 'BF06DIS.JPG', 'BF07DIS.JPG', 'BF09DIS.JPG', 'BF10DIS.JPG', 'BF11DIS.JPG', 'BF12DIS.JPG', 'BF13DIS.JPG', 'BF14DIS.JPG', 'BF15DIS.JPG', 'BF16DIS.JPG', 'BF17DIS.JPG', 'BF19DIS.JPG', 'BF20DIS.JPG', 'BF21DIS.JPG', 'BF22DIS.JPG', 'BF23DIS.JPG', 'BF24DIS.JPG', 'BF25DIS.JPG', 'BF26DIS.JPG', 'BF27DIS.JPG', 'BF28DIS.JPG', 'BF29DIS.JPG', 'BF30DIS.JPG', 'BF31DIS.JPG', 'BF32DIS.JPG', 'BF33DIS.JPG', 'BF34DIS.JPG', 'BF35DIS.JPG', 'BM02DIS.JPG', 'BM03DIS.JPG', 'BM04DIS.JPG', 'BM05DIS.JPG', 'BM06DIS.JPG', 'BM07DIS.JPG', 'BM08DIS.JPG', 'BM09DIS.JPG', 'BM10DIS.JPG', 'BM11DIS.JPG', 'BM12DIS.JPG', 'BM13DIS.JPG', 'BM14DIS.JPG', 'BM15DIS.JPG', 'BM16DIS.JPG', 'BM17DIS.JPG', 'BM18DIS.JPG', 'BM19DIS.JPG', 'BM20DIS.JPG', 'BM21DIS.JPG', 'BM22DIS.JPG', 'BM23DIS.JPG', 'BM25DIS.JPG', 'BM26DIS.JPG', 'BM27DIS.JPG', 'BM28DIS.JPG', 'BM29DIS.JPG', 'BM30DIS.JPG', 'BM31DIS.JPG', 'BM32DIS.JPG', 'BM33DIS.JPG', 'BM34DIS.JPG', 'BM35DIS.JPG']
+        var disgustFacesLength = disgustFacesArr.length
+        var randomDisgustIdentifier = getRandomInt(1,disgustFacesLength)
+        var randomDisgustImage = disgustFacesArr[randomDisgustIdentifier]
+        //Using same number identifier as cue, select disgust scrambled mask
+        var scrambledDisgustFacesArr = ['scrambledAF01DIS.JPG', 'scrambledAF02DIS.JPG', 'scrambledAF03DIS.JPG', 'scrambledAF04DIS.JPG', 'scrambledAF05DIS.JPG', 'scrambledAF06DIS.JPG', 'scrambledAF07DIS.JPG', 'scrambledAF09DIS.JPG', 'scrambledAF10DIS.JPG', 'scrambledAF11DIS.JPG', 'scrambledAF12DIS.JPG', 'scrambledAF13DIS.JPG', 'scrambledAF14DIS.JPG', 'scrambledAF15DIS.JPG', 'scrambledAF16DIS.JPG', 'scrambledAF17DIS.JPG', 'scrambledAF19DIS.JPG', 'scrambledAF20DIS.JPG', 'scrambledAF21DIS.JPG', 'scrambledAF22DIS.JPG', 'scrambledAF23DIS.JPG', 'scrambledAF24DIS.JPG', 'scrambledAF25DIS.JPG', 'scrambledAF26DIS.JPG', 'scrambledAF27DIS.JPG', 'scrambledAF28DIS.JPG', 'scrambledAF29DIS.JPG', 'scrambledAF30DIS.JPG', 'scrambledAF31DIS.JPG', 'scrambledAF32DIS.JPG', 'scrambledAF33DIS.JPG', 'scrambledAF34DIS.JPG', 'scrambledAF35DIS.JPG', 'scrambledAM01DIS.JPG', 'scrambledAM02DIS.JPG', 'scrambledAM03DIS.JPG', 'scrambledAM04DIS.JPG', 'scrambledAM05DIS.JPG', 'scrambledAM06DIS.JPG', 'scrambledAM07DIS.JPG', 'scrambledAM08DIS.JPG', 'scrambledAM09DIS.JPG', 'scrambledAM10DIS.JPG', 'scrambledAM11DIS.JPG', 'scrambledAM12DIS.JPG', 'scrambledAM13DIS.JPG', 'scrambledAM14DIS.JPG', 'scrambledAM15DIS.JPG', 'scrambledAM16DIS.JPG', 'scrambledAM17DIS.JPG', 'scrambledAM18DIS.JPG', 'scrambledAM19DIS.JPG', 'scrambledAM20DIS.JPG', 'scrambledAM21DIS.JPG', 'scrambledAM22DIS.JPG', 'scrambledAM23DIS.JPG', 'scrambledAM24DIS.JPG', 'scrambledAM25DIS.JPG', 'scrambledAM27DIS.JPG', 'scrambledAM28DIS.JPG', 'scrambledAM29DIS.JPG', 'scrambledAM30DIS.JPG', 'scrambledAM31DIS.JPG', 'scrambledAM32DIS.JPG', 'scrambledAM33DIS.JPG', 'scrambledAM34DIS.JPG', 'scrambledAM35DIS.JPG', 'scrambledBF01DIS.JPG', 'scrambledBF02DIS.JPG', 'scrambledBF03DIS.JPG', 'scrambledBF04DIS.JPG', 'scrambledBF05DIS.JPG', 'scrambledBF06DIS.JPG', 'scrambledBF07DIS.JPG', 'scrambledBF09DIS.JPG', 'scrambledBF10DIS.JPG', 'scrambledBF11DIS.JPG', 'scrambledBF12DIS.JPG', 'scrambledBF13DIS.JPG', 'scrambledBF14DIS.JPG', 'scrambledBF15DIS.JPG', 'scrambledBF16DIS.JPG', 'scrambledBF17DIS.JPG', 'scrambledBF19DIS.JPG', 'scrambledBF20DIS.JPG', 'scrambledBF21DIS.JPG', 'scrambledBF22DIS.JPG', 'scrambledBF23DIS.JPG', 'scrambledBF24DIS.JPG', 'scrambledBF25DIS.JPG', 'scrambledBF26DIS.JPG', 'scrambledBF27DIS.JPG', 'scrambledBF28DIS.JPG', 'scrambledBF29DIS.JPG', 'scrambledBF30DIS.JPG', 'scrambledBF31DIS.JPG', 'scrambledBF32DIS.JPG', 'scrambledBF33DIS.JPG', 'scrambledBF34DIS.JPG', 'scrambledBF35DIS.JPG', 'scrambledBM02DIS.JPG', 'scrambledBM03DIS.JPG', 'scrambledBM04DIS.JPG', 'scrambledBM05DIS.JPG', 'scrambledBM06DIS.JPG', 'scrambledBM07DIS.JPG', 'scrambledBM08DIS.JPG', 'scrambledBM09DIS.JPG', 'scrambledBM10DIS.JPG', 'scrambledBM11DIS.JPG', 'scrambledBM12DIS.JPG', 'scrambledBM13DIS.JPG', 'scrambledBM14DIS.JPG', 'scrambledBM15DIS.JPG', 'scrambledBM16DIS.JPG', 'scrambledBM17DIS.JPG', 'scrambledBM18DIS.JPG', 'scrambledBM19DIS.JPG', 'scrambledBM20DIS.JPG', 'scrambledBM21DIS.JPG', 'scrambledBM22DIS.JPG', 'scrambledBM23DIS.JPG', 'scrambledBM25DIS.JPG', 'scrambledBM26DIS.JPG', 'scrambledBM27DIS.JPG', 'scrambledBM28DIS.JPG', 'scrambledBM29DIS.JPG', 'scrambledBM30DIS.JPG', 'scrambledBM31DIS.JPG', 'scrambledBM32DIS.JPG', 'scrambledBM33DIS.JPG', 'scrambledBM34DIS.JPG', 'scrambledBM35DIS.JPG']
+        var randomScrambledDisgustMask = scrambledDisgustFacesArr[randomDisgustIdentifier]
+
+        //For backwards mask (always neutral face)...
+        var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)
+        //...ensure that the same face is not used were neutral cue face to be selected
+        while (randomNeutralCueIdentifier == randomNeutralMaskIdentifier){ 
+            var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)}
+        //}
+        var randomNeutralMaskImage = neutralFacesArr[randomNeutralMaskIdentifier]
+
+        var NeutralImageCuePath = ['jspsych/neutralFaces',randomNeutralCueImage].join('/')
+        var scrambledNeutralImagePath = ['jspsych/scrambledNeutralFaces',randomScrambledNeutralMask].join('/')
+        var DisgustImageCuePath = ['jspsych/disgustFaces',randomDisgustImage].join('/')
+        var scrambledDisgustImagePath = ['jspsych/scrambledDisgustFaces',randomScrambledDisgustMask].join('/')
+
+        delete CoinToss
+        if(i==0){var CoinToss = 0}
+        if(i==1){var CoinToss = 1}
+        if(i==2){
+        var CoinToss = jsPsych.randomization.sampleWithReplacement([0,1], 1)}
+        console.log= CoinToss
+        if(CoinToss==0){
+            preloadedMaskImages[i]={
+                scrambledMask: ['jspsych/scrambledNeutralFaces',randomScrambledNeutralMask].join('/'),
+                cue: ['jspsych/neutralFaces',randomNeutralCueImage].join('/'),
+                neutralBackwardsMask: ['jspsych/neutralFaces',randomNeutralMaskImage].join('/'),
+                disgustMasks: 0
+            }
+        }else{
+            preloadedMaskImages[i]={
+                scrambledMask: ['jspsych/scrambledDisgustFaces',randomScrambledDisgustMask].join('/'),
+                cue: ['jspsych/disgustFaces',randomDisgustImage].join('/'),
+                neutralBackwardsMask: ['jspsych/neutralFaces',randomNeutralMaskImage].join('/'),
+                disgustMasks: 1
+            }
+        }}
+
 /////////////////////////////  BEGIN EXPERIMENT  ////////////////////////////////////////////
         //Message prompting user to begin presentation
         var timeline = [];
@@ -285,7 +342,7 @@ for(let i=0;i<nPracticeMemorizationTrials;i++){
     let str1 = '<img src='
     let str2 = ' height="250px">'
     let str3 = ',</br>'
-    let cfdDirectory = 'jspsych/CFDfaces/'
+    let cfdDirectory = 'jspsych/resizedCFDfaces/'
     let faceDir = cfdDirectory.concat(face)
     faceDir = "'"+faceDir+"'"
     var ImgStr = practiceHeader.concat(str1,faceDir,str2,str3,'<b>',name,'</b>')
@@ -332,13 +389,24 @@ i = []
 var directionsBeforeTest = {
             type: 'image-button-response',
             stimulus: 'directionsForTest.JPG',
-            choices: ['Continue on to the Memory Test'],
+            choices: ['Continue'],
             on_finish: function(data){
         data.iTrial = 1,
-        data.Phase = 'directions'
+        data.Phase = 'directionsForTest'
         data.ExperimentPhase ='break'
         }}
         timeline.push(directionsBeforeTest)
+
+        var directionsBeforeTest2 = {
+            type: 'image-button-response',
+            stimulus: 'directionsForTest2.JPG',
+            choices: ['Continue On to the Memory Test'],
+            on_finish: function(data){
+        data.iTrial = 1,
+        data.Phase = 'directionsForTest2'
+        data.ExperimentPhase ='break'
+        }}
+        timeline.push(directionsBeforeTest2)
 
 ////////////////////////////// PRACTICE RECALL PHASE//////////////////////////////////////////////////////////
 
@@ -411,7 +479,7 @@ var directionsBeforeTest = {
         //250ms Forward-Mask (phase-scrambled face)
         var forwardMask = {
         type: 'image-keyboard-response',
-        stimulus: scrambledMaskPath,
+        stimulus: preloadedMaskImages[i].scrambledMask,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: forwardMaskDuration,
@@ -434,18 +502,18 @@ var directionsBeforeTest = {
         var correctResponse= correctResponse
         //Define two variable stimuli for the cue, see integration below in "cue_proecure"
 
-        var sampledCueDuration= function(){
-        return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
+        // var sampledCueDuration= function(){
+        // return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
  
         //present the cue (16ms)
         var cueImage = {
         type: 'image-keyboard-response',
-        stimulus: imageCuePath,
+        stimulus: preloadedMaskImages[i].cue,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
-        trial_duration: sampledCueDuration,
+        trial_duration: cueDuration,
            on_finish: function(data){      
-        data.StimulusDurationSetting = sampledCueDuration,
+        data.StimulusDurationSetting = cueDuration,
         data.iTrial = i+1,
         data.ExperimentPhase = 'Practice'
         data.Phase = 'Cue';
@@ -456,7 +524,7 @@ var directionsBeforeTest = {
         //100ms Neutral Face 
         var maskImage = {
         type: 'image-keyboard-response',
-        stimulus: NeutralImageMaskPath,
+        stimulus: preloadedMaskImages[i].neutralBackwardsMask,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: backwardMaskDuration,
@@ -588,7 +656,7 @@ var directionsBeforeTest = {
 
 ////////////////////////////MEMORIZATION PHASE///////////////////////////////////////////
 for(let i=0;i<nMemorizationTrials;i++){
-    var face = faceNamePairs[i].face;// change to LET instead of VAR after debugging
+    let face = faceNamePairs[i].face;// change to LET instead of VAR after debugging
     var name = faceNamePairs[i].name; //change to LET instead of VAR after debugging
     let str1 = '<img src='
     let str2 = ' height="250px">'
@@ -610,6 +678,9 @@ for(let i=0;i<nMemorizationTrials;i++){
         data.iTrial = i+1,
         data.Phase = 'IntactFace';
         data.StimulusDurationSetting = PresentationDuration
+        data.rearranged = 0
+        data.Face = faceNamePairs[i].face
+        data.Name = faceNamePairs[i].name
         data.ExperimentPhase = 'Memorization'
         }
     }
@@ -628,15 +699,9 @@ for(let i=0;i<nMemorizationTrials;i++){
         data.Phase = 'fixation'
         }
         }
-        timeline.push(fixation)
+        timeline.push(fixation)}
 
-//end of for-loop through all fit/doesn't fit trials
-    jsPsych.init({
-        timeline: timeline,
-        //on_finish: function(){  jsPsych.data.displayData()}
-    })}
 
-i = []
 //////////////////////////////RECALL PHASE//////////////////////////////////////////////////////////
         var breakTrial = {
             type: 'html-keyboard-response',
@@ -647,10 +712,9 @@ i = []
         data.ExperimentPhase = 'Break'
         }}
         timeline.push(breakTrial)
+        i = []
 
-        //Loop through a fleixble number of trials
-        for (let i=0; i <nTrialsRecall;i++){ 
-                
+        for (let i=0; i <nTrialsRecall;i++){
         //1000msITI
         var ITI = {
         type: 'html-keyboard-response',
@@ -666,58 +730,10 @@ i = []
         }
         timeline.push(ITI)
 
-        //Select cue Images (do this prior to cue-phase)
-        var neutralFacesArr= ['AF01NES.JPG', 'AF02NES.JPG', 'AF03NES.JPG', 'AF04NES.JPG', 'AF05NES.JPG', 'AF06NES.JPG', 'AF07NES.JPG', 'AF08NES.JPG', 'AF09NES.JPG', 'AF10NES.JPG', 'AF11NES.JPG', 'AF12NES.JPG', 'AF13NES.JPG', 'AF14NES.JPG', 'AF15NES.JPG', 'AF16NES.JPG', 'AF17NES.JPG', 'AF18NES.JPG', 'AF19NES.JPG', 'AF20NES.JPG', 'AF21NES.JPG', 'AF22NES.JPG', 'AF23NES.JPG', 'AF24NES.JPG', 'AF25NES.JPG', 'AF26NES.JPG', 'AF27NES.JPG', 'AF28NES.JPG', 'AF29NES.JPG', 'AF30NES.JPG', 'AF31NES.JPG', 'AF32NES.JPG', 'AF33NES.JPG', 'AF34NES.JPG', 'AF35NES.JPG', 'AM01NES.JPG', 'AM02NES.JPG', 'AM03NES.JPG', 'AM04NES.JPG', 'AM05NES.JPG', 'AM06NES.JPG', 'AM07NES.JPG', 'AM08NES.JPG', 'AM09NES.JPG', 'AM10NES.JPG', 'AM11NES.JPG', 'AM13NES.JPG', 'AM14NES.JPG', 'AM15NES.JPG', 'AM17NES.JPG', 'AM18NES.JPG', 'AM21NES.JPG', 'AM22NES.JPG', 'AM23NES.JPG', 'AM25NES.JPG', 'AM26NES.JPG', 'AM27NES.JPG', 'AM28NES.JPG', 'AM29NES.JPG', 'AM30NES.JPG', 'AM31NES.JPG', 'AM32NES.JPG', 'AM33NES.JPG', 'AM34NES.JPG', 'AM35NES.JPG', 'BF01NES.JPG', 'BF02NES.JPG', 'BF03NES.JPG', 'BF04NES.JPG', 'BF05NES.JPG', 'BF06NES.JPG', 'BF07NES.JPG', 'BF08NES.JPG', 'BF09NES.JPG', 'BF10NES.JPG', 'BF11NES.JPG', 'BF12NES.JPG', 'BF13NES.JPG', 'BF14NES.JPG', 'BF15NES.JPG', 'BF16NES.JPG', 'BF17NES.JPG', 'BF18NES.JPG', 'BF19NES.JPG', 'BF20NES.JPG', 'BF21NES.JPG', 'BF22NES.JPG', 'BF23NES.JPG', 'BF24NES.JPG', 'BF25NES.JPG', 'BF26NES.JPG', 'BF27NES.JPG', 'BF28NES.JPG', 'BF29NES.JPG', 'BF30NES.JPG', 'BF31NES.JPG', 'BF32NES.JPG', 'BF33NES.JPG', 'BF34NES.JPG', 'BF35NES.JPG', 'BM01NES.JPG', 'BM02NES.JPG', 'BM03NES.JPG', 'BM04NES.JPG', 'BM05NES.JPG', 'BM06NES.JPG', 'BM07NES.JPG', 'BM08NES.JPG', 'BM09NES.JPG', 'BM10NES.JPG', 'BM11NES.JPG', 'BM12NES.JPG', 'BM13NES.JPG', 'BM14NES.JPG', 'BM16NES.JPG', 'BM21NES.JPG', 'BM22NES.JPG', 'BM23NES.JPG', 'BM24NES.JPG', 'BM25NES.JPG', 'BM26NES.JPG', 'BM27NES.JPG', 'BM28NES.JPG', 'BM30NES.JPG', 'BM31NES.JPG', 'BM32NES.JPG', 'BM33NES.JPG', 'BM34NES.JPG', 'BM35NES.JPG']
-        var neutralFacesLength = neutralFacesArr.length
-        var randomNeutralCueIdentifier = getRandomInt(1,neutralFacesLength)
-        var randomNeutralCueImage = neutralFacesArr[randomNeutralCueIdentifier]
-        //Using same number identifier as cue, select neutral scrambled mask
-        var scrambledNeutralFacesArr = ['scrambledAF01NES.JPG', 'scrambledAF02NES.JPG', 'scrambledAF03NES.JPG', 'scrambledAF04NES.JPG', 'scrambledAF05NES.JPG', 'scrambledAF06NES.JPG', 'scrambledAF07NES.JPG', 'scrambledAF08NES.JPG', 'scrambledAF09NES.JPG', 'scrambledAF10NES.JPG', 'scrambledAF11NES.JPG', 'scrambledAF12NES.JPG', 'scrambledAF13NES.JPG', 'scrambledAF14NES.JPG', 'scrambledAF15NES.JPG', 'scrambledAF16NES.JPG', 'scrambledAF17NES.JPG', 'scrambledAF18NES.JPG', 'scrambledAF19NES.JPG', 'scrambledAF20NES.JPG', 'scrambledAF21NES.JPG', 'scrambledAF22NES.JPG', 'scrambledAF23NES.JPG', 'scrambledAF24NES.JPG', 'scrambledAF25NES.JPG', 'scrambledAF26NES.JPG', 'scrambledAF27NES.JPG', 'scrambledAF28NES.JPG', 'scrambledAF29NES.JPG', 'scrambledAF30NES.JPG', 'scrambledAF31NES.JPG', 'scrambledAF32NES.JPG', 'scrambledAF33NES.JPG', 'scrambledAF34NES.JPG', 'scrambledAF35NES.JPG', 'scrambledAM01NES.JPG', 'scrambledAM02NES.JPG', 'scrambledAM03NES.JPG', 'scrambledAM04NES.JPG', 'scrambledAM05NES.JPG', 'scrambledAM06NES.JPG', 'scrambledAM07NES.JPG', 'scrambledAM08NES.JPG', 'scrambledAM09NES.JPG', 'scrambledAM10NES.JPG', 'scrambledAM11NES.JPG', 'scrambledAM13NES.JPG', 'scrambledAM14NES.JPG', 'scrambledAM15NES.JPG', 'scrambledAM17NES.JPG', 'scrambledAM18NES.JPG', 'scrambledAM21NES.JPG', 'scrambledAM22NES.JPG', 'scrambledAM23NES.JPG', 'scrambledAM25NES.JPG', 'scrambledAM26NES.JPG', 'scrambledAM27NES.JPG', 'scrambledAM28NES.JPG', 'scrambledAM29NES.JPG', 'scrambledAM30NES.JPG', 'scrambledAM31NES.JPG', 'scrambledAM32NES.JPG', 'scrambledAM33NES.JPG', 'scrambledAM34NES.JPG', 'scrambledAM35NES.JPG', 'scrambledBF01NES.JPG', 'scrambledBF02NES.JPG', 'scrambledBF03NES.JPG', 'scrambledBF04NES.JPG', 'scrambledBF05NES.JPG', 'scrambledBF06NES.JPG', 'scrambledBF07NES.JPG', 'scrambledBF08NES.JPG', 'scrambledBF09NES.JPG', 'scrambledBF10NES.JPG', 'scrambledBF11NES.JPG', 'scrambledBF12NES.JPG', 'scrambledBF13NES.JPG', 'scrambledBF14NES.JPG', 'scrambledBF15NES.JPG', 'scrambledBF16NES.JPG', 'scrambledBF17NES.JPG', 'scrambledBF18NES.JPG', 'scrambledBF19NES.JPG', 'scrambledBF20NES.JPG', 'scrambledBF21NES.JPG', 'scrambledBF22NES.JPG', 'scrambledBF23NES.JPG', 'scrambledBF24NES.JPG', 'scrambledBF25NES.JPG', 'scrambledBF26NES.JPG', 'scrambledBF27NES.JPG', 'scrambledBF28NES.JPG', 'scrambledBF29NES.JPG', 'scrambledBF30NES.JPG', 'scrambledBF31NES.JPG', 'scrambledBF32NES.JPG', 'scrambledBF33NES.JPG', 'scrambledBF34NES.JPG', 'scrambledBF35NES.JPG', 'scrambledBM01NES.JPG', 'scrambledBM02NES.JPG', 'scrambledBM03NES.JPG', 'scrambledBM04NES.JPG', 'scrambledBM05NES.JPG', 'scrambledBM06NES.JPG', 'scrambledBM07NES.JPG', 'scrambledBM08NES.JPG', 'scrambledBM09NES.JPG', 'scrambledBM10NES.JPG', 'scrambledBM11NES.JPG', 'scrambledBM12NES.JPG', 'scrambledBM13NES.JPG', 'scrambledBM14NES.JPG', 'scrambledBM16NES.JPG', 'scrambledBM21NES.JPG', 'scrambledBM22NES.JPG', 'scrambledBM23NES.JPG', 'scrambledBM24NES.JPG', 'scrambledBM25NES.JPG', 'scrambledBM26NES.JPG', 'scrambledBM27NES.JPG', 'scrambledBM28NES.JPG', 'scrambledBM30NES.JPG', 'scrambledBM31NES.JPG', 'scrambledBM32NES.JPG', 'scrambledBM33NES.JPG', 'scrambledBM34NES.JPG', 'scrambledBM35NES.JPG']
-        var randomScrambledNeutralMask = scrambledNeutralFacesArr[randomNeutralCueIdentifier]
-
-        var disgustFacesArr = ['AF01DIS.JPG', 'AF02DIS.JPG', 'AF03DIS.JPG', 'AF04DIS.JPG', 'AF05DIS.JPG', 'AF06DIS.JPG', 'AF07DIS.JPG', 'AF09DIS.JPG', 'AF10DIS.JPG', 'AF11DIS.JPG', 'AF12DIS.JPG', 'AF13DIS.JPG', 'AF14DIS.JPG', 'AF15DIS.JPG', 'AF16DIS.JPG', 'AF17DIS.JPG', 'AF19DIS.JPG', 'AF20DIS.JPG', 'AF21DIS.JPG', 'AF22DIS.JPG', 'AF23DIS.JPG', 'AF24DIS.JPG', 'AF25DIS.JPG', 'AF26DIS.JPG', 'AF27DIS.JPG', 'AF28DIS.JPG', 'AF29DIS.JPG', 'AF30DIS.JPG', 'AF31DIS.JPG', 'AF32DIS.JPG', 'AF33DIS.JPG', 'AF34DIS.JPG', 'AF35DIS.JPG', 'AM01DIS.JPG', 'AM02DIS.JPG', 'AM03DIS.JPG', 'AM04DIS.JPG', 'AM05DIS.JPG', 'AM06DIS.JPG', 'AM07DIS.JPG', 'AM08DIS.JPG', 'AM09DIS.JPG', 'AM10DIS.JPG', 'AM11DIS.JPG', 'AM12DIS.JPG', 'AM13DIS.JPG', 'AM14DIS.JPG', 'AM15DIS.JPG', 'AM16DIS.JPG', 'AM17DIS.JPG', 'AM18DIS.JPG', 'AM19DIS.JPG', 'AM20DIS.JPG', 'AM21DIS.JPG', 'AM22DIS.JPG', 'AM23DIS.JPG', 'AM24DIS.JPG', 'AM25DIS.JPG', 'AM27DIS.JPG', 'AM28DIS.JPG', 'AM29DIS.JPG', 'AM30DIS.JPG', 'AM31DIS.JPG', 'AM32DIS.JPG', 'AM33DIS.JPG', 'AM34DIS.JPG', 'AM35DIS.JPG', 'BF01DIS.JPG', 'BF02DIS.JPG', 'BF03DIS.JPG', 'BF04DIS.JPG', 'BF05DIS.JPG', 'BF06DIS.JPG', 'BF07DIS.JPG', 'BF09DIS.JPG', 'BF10DIS.JPG', 'BF11DIS.JPG', 'BF12DIS.JPG', 'BF13DIS.JPG', 'BF14DIS.JPG', 'BF15DIS.JPG', 'BF16DIS.JPG', 'BF17DIS.JPG', 'BF19DIS.JPG', 'BF20DIS.JPG', 'BF21DIS.JPG', 'BF22DIS.JPG', 'BF23DIS.JPG', 'BF24DIS.JPG', 'BF25DIS.JPG', 'BF26DIS.JPG', 'BF27DIS.JPG', 'BF28DIS.JPG', 'BF29DIS.JPG', 'BF30DIS.JPG', 'BF31DIS.JPG', 'BF32DIS.JPG', 'BF33DIS.JPG', 'BF34DIS.JPG', 'BF35DIS.JPG', 'BM02DIS.JPG', 'BM03DIS.JPG', 'BM04DIS.JPG', 'BM05DIS.JPG', 'BM06DIS.JPG', 'BM07DIS.JPG', 'BM08DIS.JPG', 'BM09DIS.JPG', 'BM10DIS.JPG', 'BM11DIS.JPG', 'BM12DIS.JPG', 'BM13DIS.JPG', 'BM14DIS.JPG', 'BM15DIS.JPG', 'BM16DIS.JPG', 'BM17DIS.JPG', 'BM18DIS.JPG', 'BM19DIS.JPG', 'BM20DIS.JPG', 'BM21DIS.JPG', 'BM22DIS.JPG', 'BM23DIS.JPG', 'BM25DIS.JPG', 'BM26DIS.JPG', 'BM27DIS.JPG', 'BM28DIS.JPG', 'BM29DIS.JPG', 'BM30DIS.JPG', 'BM31DIS.JPG', 'BM32DIS.JPG', 'BM33DIS.JPG', 'BM34DIS.JPG', 'BM35DIS.JPG']
-        var disgustFacesLength = disgustFacesArr.length
-        var randomDisgustIdentifier = getRandomInt(1,disgustFacesLength)
-        var randomDisgustImage = disgustFacesArr[randomDisgustIdentifier]
-        //Using same number identifier as cue, select disgust scrambled mask
-        var scrambledDisgustFacesArr = ['scrambledAF01DIS.JPG', 'scrambledAF02DIS.JPG', 'scrambledAF03DIS.JPG', 'scrambledAF04DIS.JPG', 'scrambledAF05DIS.JPG', 'scrambledAF06DIS.JPG', 'scrambledAF07DIS.JPG', 'scrambledAF09DIS.JPG', 'scrambledAF10DIS.JPG', 'scrambledAF11DIS.JPG', 'scrambledAF12DIS.JPG', 'scrambledAF13DIS.JPG', 'scrambledAF14DIS.JPG', 'scrambledAF15DIS.JPG', 'scrambledAF16DIS.JPG', 'scrambledAF17DIS.JPG', 'scrambledAF19DIS.JPG', 'scrambledAF20DIS.JPG', 'scrambledAF21DIS.JPG', 'scrambledAF22DIS.JPG', 'scrambledAF23DIS.JPG', 'scrambledAF24DIS.JPG', 'scrambledAF25DIS.JPG', 'scrambledAF26DIS.JPG', 'scrambledAF27DIS.JPG', 'scrambledAF28DIS.JPG', 'scrambledAF29DIS.JPG', 'scrambledAF30DIS.JPG', 'scrambledAF31DIS.JPG', 'scrambledAF32DIS.JPG', 'scrambledAF33DIS.JPG', 'scrambledAF34DIS.JPG', 'scrambledAF35DIS.JPG', 'scrambledAM01DIS.JPG', 'scrambledAM02DIS.JPG', 'scrambledAM03DIS.JPG', 'scrambledAM04DIS.JPG', 'scrambledAM05DIS.JPG', 'scrambledAM06DIS.JPG', 'scrambledAM07DIS.JPG', 'scrambledAM08DIS.JPG', 'scrambledAM09DIS.JPG', 'scrambledAM10DIS.JPG', 'scrambledAM11DIS.JPG', 'scrambledAM12DIS.JPG', 'scrambledAM13DIS.JPG', 'scrambledAM14DIS.JPG', 'scrambledAM15DIS.JPG', 'scrambledAM16DIS.JPG', 'scrambledAM17DIS.JPG', 'scrambledAM18DIS.JPG', 'scrambledAM19DIS.JPG', 'scrambledAM20DIS.JPG', 'scrambledAM21DIS.JPG', 'scrambledAM22DIS.JPG', 'scrambledAM23DIS.JPG', 'scrambledAM24DIS.JPG', 'scrambledAM25DIS.JPG', 'scrambledAM27DIS.JPG', 'scrambledAM28DIS.JPG', 'scrambledAM29DIS.JPG', 'scrambledAM30DIS.JPG', 'scrambledAM31DIS.JPG', 'scrambledAM32DIS.JPG', 'scrambledAM33DIS.JPG', 'scrambledAM34DIS.JPG', 'scrambledAM35DIS.JPG', 'scrambledBF01DIS.JPG', 'scrambledBF02DIS.JPG', 'scrambledBF03DIS.JPG', 'scrambledBF04DIS.JPG', 'scrambledBF05DIS.JPG', 'scrambledBF06DIS.JPG', 'scrambledBF07DIS.JPG', 'scrambledBF09DIS.JPG', 'scrambledBF10DIS.JPG', 'scrambledBF11DIS.JPG', 'scrambledBF12DIS.JPG', 'scrambledBF13DIS.JPG', 'scrambledBF14DIS.JPG', 'scrambledBF15DIS.JPG', 'scrambledBF16DIS.JPG', 'scrambledBF17DIS.JPG', 'scrambledBF19DIS.JPG', 'scrambledBF20DIS.JPG', 'scrambledBF21DIS.JPG', 'scrambledBF22DIS.JPG', 'scrambledBF23DIS.JPG', 'scrambledBF24DIS.JPG', 'scrambledBF25DIS.JPG', 'scrambledBF26DIS.JPG', 'scrambledBF27DIS.JPG', 'scrambledBF28DIS.JPG', 'scrambledBF29DIS.JPG', 'scrambledBF30DIS.JPG', 'scrambledBF31DIS.JPG', 'scrambledBF32DIS.JPG', 'scrambledBF33DIS.JPG', 'scrambledBF34DIS.JPG', 'scrambledBF35DIS.JPG', 'scrambledBM02DIS.JPG', 'scrambledBM03DIS.JPG', 'scrambledBM04DIS.JPG', 'scrambledBM05DIS.JPG', 'scrambledBM06DIS.JPG', 'scrambledBM07DIS.JPG', 'scrambledBM08DIS.JPG', 'scrambledBM09DIS.JPG', 'scrambledBM10DIS.JPG', 'scrambledBM11DIS.JPG', 'scrambledBM12DIS.JPG', 'scrambledBM13DIS.JPG', 'scrambledBM14DIS.JPG', 'scrambledBM15DIS.JPG', 'scrambledBM16DIS.JPG', 'scrambledBM17DIS.JPG', 'scrambledBM18DIS.JPG', 'scrambledBM19DIS.JPG', 'scrambledBM20DIS.JPG', 'scrambledBM21DIS.JPG', 'scrambledBM22DIS.JPG', 'scrambledBM23DIS.JPG', 'scrambledBM25DIS.JPG', 'scrambledBM26DIS.JPG', 'scrambledBM27DIS.JPG', 'scrambledBM28DIS.JPG', 'scrambledBM29DIS.JPG', 'scrambledBM30DIS.JPG', 'scrambledBM31DIS.JPG', 'scrambledBM32DIS.JPG', 'scrambledBM33DIS.JPG', 'scrambledBM34DIS.JPG', 'scrambledBM35DIS.JPG']
-        var randomScrambledDisgustMask = scrambledDisgustFacesArr[randomDisgustIdentifier]
-
-        //For backwards mask (always neutral face)...
-        var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)
-        //...ensure that the same face is not used were neutral cue face to be selected
-        while (randomNeutralCueIdentifier == randomNeutralMaskIdentifier){ 
-            var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)}
-        //}
-        var randomNeutralMaskImage = neutralFacesArr[randomNeutralMaskIdentifier]
-
-        var NeutralImageCuePath = ['jspsych/neutralFaces',randomNeutralCueImage].join('/')
-        var scrambledNeutralImagePath = ['jspsych/scrambledNeutralFaces',randomScrambledNeutralMask].join('/')
-        var DisgustImageCuePath = ['jspsych/disgustFaces',randomDisgustImage].join('/')
-        var scrambledDisgustImagePath = ['jspsych/scrambledDisgustFaces',randomScrambledDisgustMask].join('/')
-        //chooseTheImage
-
-        delete CoinToss
-        if(i==0){var CoinToss = 0}
-        if(i==1){var CoinToss = 1}
-        if(i==2){
-        var CoinToss = jsPsych.randomization.sampleWithReplacement([0,1], 1)}
-        console.log= CoinToss
-        if(CoinToss==0){
-            var scrambledMaskPath= scrambledNeutralImagePath
-            var imageCuePath= NeutralImageCuePath
-        }else{
-            var scrambledMaskPath= scrambledDisgustImagePath
-            var imageCuePath= DisgustImageCuePath
-        }
-
-        //Finally, the path for the backwards Neutral Mask:
-        var NeutralImageMaskPath = ['jspsych/neutralFaces',randomNeutralMaskImage].join('/')
-
         //250ms Forward-Mask (phase-scrambled face)
         var forwardMask = {
         type: 'image-keyboard-response',
-        stimulus: scrambledMaskPath,
+        stimulus: preloadedMaskImages[i].scrambledMask,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: forwardMaskDuration,
@@ -741,18 +757,18 @@ i = []
         var correctResponse= correctResponse
         //Define two variable stimuli for the cue, see integration below in "cue_proecure"
 
-        var sampledCueDuration= function(){
-        return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
+        //var sampledCueDuration= function(){
+        //return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
  
         //present the cue (16ms)
         var cueImage = {
         type: 'image-keyboard-response',
-        stimulus: imageCuePath,
+        stimulus: preloadedMaskImages[i].cue,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
-        trial_duration: sampledCueDuration,
+        trial_duration: cueDuration,
            on_finish: function(data){      
-        data.StimulusDurationSetting = sampledCueDuration,
+        data.StimulusDurationSetting = cueDuration,
         data.iTrial = i+1,
         data.ExperimentPhase = 'Test'
         data.Phase = 'Cue';
@@ -763,7 +779,7 @@ i = []
         //100ms Neutral Face 
         var maskImage = {
         type: 'image-keyboard-response',
-        stimulus: NeutralImageMaskPath,
+        stimulus: preloadedMaskImages[i].neutralBackwardsMask,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: backwardMaskDuration,
@@ -833,8 +849,8 @@ i = []
         data.ExperimentPhase = 'Test'
         data.Phase = 'ConfidenceQuery'
         data.rearranged = rearranged
-        data.Face = faceRecall
-        data.Name = nameRecall
+        data.Face = hybridArray[i].face
+        data.Name = hybridArray[i].name
         if(data.response > 50){
             data.didSubjectEnterRearranged= 1}
         else if(data.response < 50){
@@ -845,7 +861,7 @@ i = []
         }
     }
     timeline.push(confidenceQuery)
-
+    }
 
         // //Ask Subject: Was "hidden face" emotional or neutral
         // var test = {
@@ -864,7 +880,7 @@ i = []
         if(i == lastTrial){
         var lastTrialPhase = {
         type: 'html-button-response',
-        stimulus: 'Thank you for completing the main memorization task. The remaining task will be brief and non-strenous. If you want to, feel free to take a short break.',
+        stimulus: 'Thank you for completing the main memorization task. The remaining task will be brief and non-strenous.',
         choices: ['Continue On'],
         on_finish: function(data){
         data.iTrial = i+1,
@@ -872,7 +888,7 @@ i = []
         data.ExperimentPhase = 'break'
         }
         }
-        timeline.push(lastTrialPhase)
+        timeline.push(lastTrialPhase)}
         
 
 
@@ -886,80 +902,31 @@ i = []
         data.Phase = 'directions'
         }}
         timeline.push(directionsToDetectionTask)
-    }}
+    
 
         ////////////DISGUSTFACEDETECTIONS///////////
 
 
         for (let i=0; i <postCalibrationTrials;i++){ 
-                
-                //1000msITI
-                var ITI = {
-                type: 'html-keyboard-response',
-                stimulus: '<div style="font-size:60px;">+</div>',
-                choices: jsPsych.NO_KEYS,
-                trial_duration: ITIDuration,
-                on_finish: function(data){
-                data.StimulusDurationSetting = ITIDuration,
-                data.iTrial = i+1,
-                data.ExperimentPhase = 'Calibration',
-                data.Phase = 'ITI';
-                }
-                }
-                timeline.push(ITI)
-        
-                //Select cue Images (do this prior to cue-phase)
-                var neutralFacesArr= ['AF01NES.JPG', 'AF02NES.JPG', 'AF03NES.JPG', 'AF04NES.JPG', 'AF05NES.JPG', 'AF06NES.JPG', 'AF07NES.JPG', 'AF08NES.JPG', 'AF09NES.JPG', 'AF10NES.JPG', 'AF11NES.JPG', 'AF12NES.JPG', 'AF13NES.JPG', 'AF14NES.JPG', 'AF15NES.JPG', 'AF16NES.JPG', 'AF17NES.JPG', 'AF18NES.JPG', 'AF19NES.JPG', 'AF20NES.JPG', 'AF21NES.JPG', 'AF22NES.JPG', 'AF23NES.JPG', 'AF24NES.JPG', 'AF25NES.JPG', 'AF26NES.JPG', 'AF27NES.JPG', 'AF28NES.JPG', 'AF29NES.JPG', 'AF30NES.JPG', 'AF31NES.JPG', 'AF32NES.JPG', 'AF33NES.JPG', 'AF34NES.JPG', 'AF35NES.JPG', 'AM01NES.JPG', 'AM02NES.JPG', 'AM03NES.JPG', 'AM04NES.JPG', 'AM05NES.JPG', 'AM06NES.JPG', 'AM07NES.JPG', 'AM08NES.JPG', 'AM09NES.JPG', 'AM10NES.JPG', 'AM11NES.JPG', 'AM13NES.JPG', 'AM14NES.JPG', 'AM15NES.JPG', 'AM17NES.JPG', 'AM18NES.JPG', 'AM21NES.JPG', 'AM22NES.JPG', 'AM23NES.JPG', 'AM25NES.JPG', 'AM26NES.JPG', 'AM27NES.JPG', 'AM28NES.JPG', 'AM29NES.JPG', 'AM30NES.JPG', 'AM31NES.JPG', 'AM32NES.JPG', 'AM33NES.JPG', 'AM34NES.JPG', 'AM35NES.JPG', 'BF01NES.JPG', 'BF02NES.JPG', 'BF03NES.JPG', 'BF04NES.JPG', 'BF05NES.JPG', 'BF06NES.JPG', 'BF07NES.JPG', 'BF08NES.JPG', 'BF09NES.JPG', 'BF10NES.JPG', 'BF11NES.JPG', 'BF12NES.JPG', 'BF13NES.JPG', 'BF14NES.JPG', 'BF15NES.JPG', 'BF16NES.JPG', 'BF17NES.JPG', 'BF18NES.JPG', 'BF19NES.JPG', 'BF20NES.JPG', 'BF21NES.JPG', 'BF22NES.JPG', 'BF23NES.JPG', 'BF24NES.JPG', 'BF25NES.JPG', 'BF26NES.JPG', 'BF27NES.JPG', 'BF28NES.JPG', 'BF29NES.JPG', 'BF30NES.JPG', 'BF31NES.JPG', 'BF32NES.JPG', 'BF33NES.JPG', 'BF34NES.JPG', 'BF35NES.JPG', 'BM01NES.JPG', 'BM02NES.JPG', 'BM03NES.JPG', 'BM04NES.JPG', 'BM05NES.JPG', 'BM06NES.JPG', 'BM07NES.JPG', 'BM08NES.JPG', 'BM09NES.JPG', 'BM10NES.JPG', 'BM11NES.JPG', 'BM12NES.JPG', 'BM13NES.JPG', 'BM14NES.JPG', 'BM16NES.JPG', 'BM21NES.JPG', 'BM22NES.JPG', 'BM23NES.JPG', 'BM24NES.JPG', 'BM25NES.JPG', 'BM26NES.JPG', 'BM27NES.JPG', 'BM28NES.JPG', 'BM30NES.JPG', 'BM31NES.JPG', 'BM32NES.JPG', 'BM33NES.JPG', 'BM34NES.JPG', 'BM35NES.JPG']
-        var neutralFacesLength = neutralFacesArr.length
-        var randomNeutralCueIdentifier = getRandomInt(1,neutralFacesLength)
-        var randomNeutralCueImage = neutralFacesArr[randomNeutralCueIdentifier]
-        //Using same number identifier as cue, select neutral scrambled mask
-        var scrambledNeutralFacesArr = ['scrambledAF01NES.JPG', 'scrambledAF02NES.JPG', 'scrambledAF03NES.JPG', 'scrambledAF04NES.JPG', 'scrambledAF05NES.JPG', 'scrambledAF06NES.JPG', 'scrambledAF07NES.JPG', 'scrambledAF08NES.JPG', 'scrambledAF09NES.JPG', 'scrambledAF10NES.JPG', 'scrambledAF11NES.JPG', 'scrambledAF12NES.JPG', 'scrambledAF13NES.JPG', 'scrambledAF14NES.JPG', 'scrambledAF15NES.JPG', 'scrambledAF16NES.JPG', 'scrambledAF17NES.JPG', 'scrambledAF18NES.JPG', 'scrambledAF19NES.JPG', 'scrambledAF20NES.JPG', 'scrambledAF21NES.JPG', 'scrambledAF22NES.JPG', 'scrambledAF23NES.JPG', 'scrambledAF24NES.JPG', 'scrambledAF25NES.JPG', 'scrambledAF26NES.JPG', 'scrambledAF27NES.JPG', 'scrambledAF28NES.JPG', 'scrambledAF29NES.JPG', 'scrambledAF30NES.JPG', 'scrambledAF31NES.JPG', 'scrambledAF32NES.JPG', 'scrambledAF33NES.JPG', 'scrambledAF34NES.JPG', 'scrambledAF35NES.JPG', 'scrambledAM01NES.JPG', 'scrambledAM02NES.JPG', 'scrambledAM03NES.JPG', 'scrambledAM04NES.JPG', 'scrambledAM05NES.JPG', 'scrambledAM06NES.JPG', 'scrambledAM07NES.JPG', 'scrambledAM08NES.JPG', 'scrambledAM09NES.JPG', 'scrambledAM10NES.JPG', 'scrambledAM11NES.JPG', 'scrambledAM13NES.JPG', 'scrambledAM14NES.JPG', 'scrambledAM15NES.JPG', 'scrambledAM17NES.JPG', 'scrambledAM18NES.JPG', 'scrambledAM21NES.JPG', 'scrambledAM22NES.JPG', 'scrambledAM23NES.JPG', 'scrambledAM25NES.JPG', 'scrambledAM26NES.JPG', 'scrambledAM27NES.JPG', 'scrambledAM28NES.JPG', 'scrambledAM29NES.JPG', 'scrambledAM30NES.JPG', 'scrambledAM31NES.JPG', 'scrambledAM32NES.JPG', 'scrambledAM33NES.JPG', 'scrambledAM34NES.JPG', 'scrambledAM35NES.JPG', 'scrambledBF01NES.JPG', 'scrambledBF02NES.JPG', 'scrambledBF03NES.JPG', 'scrambledBF04NES.JPG', 'scrambledBF05NES.JPG', 'scrambledBF06NES.JPG', 'scrambledBF07NES.JPG', 'scrambledBF08NES.JPG', 'scrambledBF09NES.JPG', 'scrambledBF10NES.JPG', 'scrambledBF11NES.JPG', 'scrambledBF12NES.JPG', 'scrambledBF13NES.JPG', 'scrambledBF14NES.JPG', 'scrambledBF15NES.JPG', 'scrambledBF16NES.JPG', 'scrambledBF17NES.JPG', 'scrambledBF18NES.JPG', 'scrambledBF19NES.JPG', 'scrambledBF20NES.JPG', 'scrambledBF21NES.JPG', 'scrambledBF22NES.JPG', 'scrambledBF23NES.JPG', 'scrambledBF24NES.JPG', 'scrambledBF25NES.JPG', 'scrambledBF26NES.JPG', 'scrambledBF27NES.JPG', 'scrambledBF28NES.JPG', 'scrambledBF29NES.JPG', 'scrambledBF30NES.JPG', 'scrambledBF31NES.JPG', 'scrambledBF32NES.JPG', 'scrambledBF33NES.JPG', 'scrambledBF34NES.JPG', 'scrambledBF35NES.JPG', 'scrambledBM01NES.JPG', 'scrambledBM02NES.JPG', 'scrambledBM03NES.JPG', 'scrambledBM04NES.JPG', 'scrambledBM05NES.JPG', 'scrambledBM06NES.JPG', 'scrambledBM07NES.JPG', 'scrambledBM08NES.JPG', 'scrambledBM09NES.JPG', 'scrambledBM10NES.JPG', 'scrambledBM11NES.JPG', 'scrambledBM12NES.JPG', 'scrambledBM13NES.JPG', 'scrambledBM14NES.JPG', 'scrambledBM16NES.JPG', 'scrambledBM21NES.JPG', 'scrambledBM22NES.JPG', 'scrambledBM23NES.JPG', 'scrambledBM24NES.JPG', 'scrambledBM25NES.JPG', 'scrambledBM26NES.JPG', 'scrambledBM27NES.JPG', 'scrambledBM28NES.JPG', 'scrambledBM30NES.JPG', 'scrambledBM31NES.JPG', 'scrambledBM32NES.JPG', 'scrambledBM33NES.JPG', 'scrambledBM34NES.JPG', 'scrambledBM35NES.JPG']
-        var randomScrambledNeutralMask = scrambledNeutralFacesArr[randomNeutralCueIdentifier]
-
-        var disgustFacesArr = ['AF01DIS.JPG', 'AF02DIS.JPG', 'AF03DIS.JPG', 'AF04DIS.JPG', 'AF05DIS.JPG', 'AF06DIS.JPG', 'AF07DIS.JPG', 'AF09DIS.JPG', 'AF10DIS.JPG', 'AF11DIS.JPG', 'AF12DIS.JPG', 'AF13DIS.JPG', 'AF14DIS.JPG', 'AF15DIS.JPG', 'AF16DIS.JPG', 'AF17DIS.JPG', 'AF19DIS.JPG', 'AF20DIS.JPG', 'AF21DIS.JPG', 'AF22DIS.JPG', 'AF23DIS.JPG', 'AF24DIS.JPG', 'AF25DIS.JPG', 'AF26DIS.JPG', 'AF27DIS.JPG', 'AF28DIS.JPG', 'AF29DIS.JPG', 'AF30DIS.JPG', 'AF31DIS.JPG', 'AF32DIS.JPG', 'AF33DIS.JPG', 'AF34DIS.JPG', 'AF35DIS.JPG', 'AM01DIS.JPG', 'AM02DIS.JPG', 'AM03DIS.JPG', 'AM04DIS.JPG', 'AM05DIS.JPG', 'AM06DIS.JPG', 'AM07DIS.JPG', 'AM08DIS.JPG', 'AM09DIS.JPG', 'AM10DIS.JPG', 'AM11DIS.JPG', 'AM12DIS.JPG', 'AM13DIS.JPG', 'AM14DIS.JPG', 'AM15DIS.JPG', 'AM16DIS.JPG', 'AM17DIS.JPG', 'AM18DIS.JPG', 'AM19DIS.JPG', 'AM20DIS.JPG', 'AM21DIS.JPG', 'AM22DIS.JPG', 'AM23DIS.JPG', 'AM24DIS.JPG', 'AM25DIS.JPG', 'AM27DIS.JPG', 'AM28DIS.JPG', 'AM29DIS.JPG', 'AM30DIS.JPG', 'AM31DIS.JPG', 'AM32DIS.JPG', 'AM33DIS.JPG', 'AM34DIS.JPG', 'AM35DIS.JPG', 'BF01DIS.JPG', 'BF02DIS.JPG', 'BF03DIS.JPG', 'BF04DIS.JPG', 'BF05DIS.JPG', 'BF06DIS.JPG', 'BF07DIS.JPG', 'BF09DIS.JPG', 'BF10DIS.JPG', 'BF11DIS.JPG', 'BF12DIS.JPG', 'BF13DIS.JPG', 'BF14DIS.JPG', 'BF15DIS.JPG', 'BF16DIS.JPG', 'BF17DIS.JPG', 'BF19DIS.JPG', 'BF20DIS.JPG', 'BF21DIS.JPG', 'BF22DIS.JPG', 'BF23DIS.JPG', 'BF24DIS.JPG', 'BF25DIS.JPG', 'BF26DIS.JPG', 'BF27DIS.JPG', 'BF28DIS.JPG', 'BF29DIS.JPG', 'BF30DIS.JPG', 'BF31DIS.JPG', 'BF32DIS.JPG', 'BF33DIS.JPG', 'BF34DIS.JPG', 'BF35DIS.JPG', 'BM02DIS.JPG', 'BM03DIS.JPG', 'BM04DIS.JPG', 'BM05DIS.JPG', 'BM06DIS.JPG', 'BM07DIS.JPG', 'BM08DIS.JPG', 'BM09DIS.JPG', 'BM10DIS.JPG', 'BM11DIS.JPG', 'BM12DIS.JPG', 'BM13DIS.JPG', 'BM14DIS.JPG', 'BM15DIS.JPG', 'BM16DIS.JPG', 'BM17DIS.JPG', 'BM18DIS.JPG', 'BM19DIS.JPG', 'BM20DIS.JPG', 'BM21DIS.JPG', 'BM22DIS.JPG', 'BM23DIS.JPG', 'BM25DIS.JPG', 'BM26DIS.JPG', 'BM27DIS.JPG', 'BM28DIS.JPG', 'BM29DIS.JPG', 'BM30DIS.JPG', 'BM31DIS.JPG', 'BM32DIS.JPG', 'BM33DIS.JPG', 'BM34DIS.JPG', 'BM35DIS.JPG']
-        var disgustFacesLength = disgustFacesArr.length
-        var randomDisgustIdentifier = getRandomInt(1,disgustFacesLength)
-        var randomDisgustImage = disgustFacesArr[randomDisgustIdentifier]
-        //Using same number identifier as cue, select disgust scrambled mask
-        var scrambledDisgustFacesArr = ['scrambledAF01DIS.JPG', 'scrambledAF02DIS.JPG', 'scrambledAF03DIS.JPG', 'scrambledAF04DIS.JPG', 'scrambledAF05DIS.JPG', 'scrambledAF06DIS.JPG', 'scrambledAF07DIS.JPG', 'scrambledAF09DIS.JPG', 'scrambledAF10DIS.JPG', 'scrambledAF11DIS.JPG', 'scrambledAF12DIS.JPG', 'scrambledAF13DIS.JPG', 'scrambledAF14DIS.JPG', 'scrambledAF15DIS.JPG', 'scrambledAF16DIS.JPG', 'scrambledAF17DIS.JPG', 'scrambledAF19DIS.JPG', 'scrambledAF20DIS.JPG', 'scrambledAF21DIS.JPG', 'scrambledAF22DIS.JPG', 'scrambledAF23DIS.JPG', 'scrambledAF24DIS.JPG', 'scrambledAF25DIS.JPG', 'scrambledAF26DIS.JPG', 'scrambledAF27DIS.JPG', 'scrambledAF28DIS.JPG', 'scrambledAF29DIS.JPG', 'scrambledAF30DIS.JPG', 'scrambledAF31DIS.JPG', 'scrambledAF32DIS.JPG', 'scrambledAF33DIS.JPG', 'scrambledAF34DIS.JPG', 'scrambledAF35DIS.JPG', 'scrambledAM01DIS.JPG', 'scrambledAM02DIS.JPG', 'scrambledAM03DIS.JPG', 'scrambledAM04DIS.JPG', 'scrambledAM05DIS.JPG', 'scrambledAM06DIS.JPG', 'scrambledAM07DIS.JPG', 'scrambledAM08DIS.JPG', 'scrambledAM09DIS.JPG', 'scrambledAM10DIS.JPG', 'scrambledAM11DIS.JPG', 'scrambledAM12DIS.JPG', 'scrambledAM13DIS.JPG', 'scrambledAM14DIS.JPG', 'scrambledAM15DIS.JPG', 'scrambledAM16DIS.JPG', 'scrambledAM17DIS.JPG', 'scrambledAM18DIS.JPG', 'scrambledAM19DIS.JPG', 'scrambledAM20DIS.JPG', 'scrambledAM21DIS.JPG', 'scrambledAM22DIS.JPG', 'scrambledAM23DIS.JPG', 'scrambledAM24DIS.JPG', 'scrambledAM25DIS.JPG', 'scrambledAM27DIS.JPG', 'scrambledAM28DIS.JPG', 'scrambledAM29DIS.JPG', 'scrambledAM30DIS.JPG', 'scrambledAM31DIS.JPG', 'scrambledAM32DIS.JPG', 'scrambledAM33DIS.JPG', 'scrambledAM34DIS.JPG', 'scrambledAM35DIS.JPG', 'scrambledBF01DIS.JPG', 'scrambledBF02DIS.JPG', 'scrambledBF03DIS.JPG', 'scrambledBF04DIS.JPG', 'scrambledBF05DIS.JPG', 'scrambledBF06DIS.JPG', 'scrambledBF07DIS.JPG', 'scrambledBF09DIS.JPG', 'scrambledBF10DIS.JPG', 'scrambledBF11DIS.JPG', 'scrambledBF12DIS.JPG', 'scrambledBF13DIS.JPG', 'scrambledBF14DIS.JPG', 'scrambledBF15DIS.JPG', 'scrambledBF16DIS.JPG', 'scrambledBF17DIS.JPG', 'scrambledBF19DIS.JPG', 'scrambledBF20DIS.JPG', 'scrambledBF21DIS.JPG', 'scrambledBF22DIS.JPG', 'scrambledBF23DIS.JPG', 'scrambledBF24DIS.JPG', 'scrambledBF25DIS.JPG', 'scrambledBF26DIS.JPG', 'scrambledBF27DIS.JPG', 'scrambledBF28DIS.JPG', 'scrambledBF29DIS.JPG', 'scrambledBF30DIS.JPG', 'scrambledBF31DIS.JPG', 'scrambledBF32DIS.JPG', 'scrambledBF33DIS.JPG', 'scrambledBF34DIS.JPG', 'scrambledBF35DIS.JPG', 'scrambledBM02DIS.JPG', 'scrambledBM03DIS.JPG', 'scrambledBM04DIS.JPG', 'scrambledBM05DIS.JPG', 'scrambledBM06DIS.JPG', 'scrambledBM07DIS.JPG', 'scrambledBM08DIS.JPG', 'scrambledBM09DIS.JPG', 'scrambledBM10DIS.JPG', 'scrambledBM11DIS.JPG', 'scrambledBM12DIS.JPG', 'scrambledBM13DIS.JPG', 'scrambledBM14DIS.JPG', 'scrambledBM15DIS.JPG', 'scrambledBM16DIS.JPG', 'scrambledBM17DIS.JPG', 'scrambledBM18DIS.JPG', 'scrambledBM19DIS.JPG', 'scrambledBM20DIS.JPG', 'scrambledBM21DIS.JPG', 'scrambledBM22DIS.JPG', 'scrambledBM23DIS.JPG', 'scrambledBM25DIS.JPG', 'scrambledBM26DIS.JPG', 'scrambledBM27DIS.JPG', 'scrambledBM28DIS.JPG', 'scrambledBM29DIS.JPG', 'scrambledBM30DIS.JPG', 'scrambledBM31DIS.JPG', 'scrambledBM32DIS.JPG', 'scrambledBM33DIS.JPG', 'scrambledBM34DIS.JPG', 'scrambledBM35DIS.JPG']
-        var randomScrambledDisgustMask = scrambledDisgustFacesArr[randomDisgustIdentifier]
-
-        //For backwards mask (always neutral face)...
-        var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)
-        //...ensure that the same face is not used were neutral cue face to be selected
-        while (randomNeutralCueIdentifier == randomNeutralMaskIdentifier){ 
-            var randomNeutralMaskIdentifier = getRandomInt(1,neutralFacesLength)}
-        //}
-        var randomNeutralMaskImage = neutralFacesArr[randomNeutralMaskIdentifier]
-
-        var NeutralImageCuePath = ['jspsych/neutralFaces',randomNeutralCueImage].join('/')
-        var scrambledNeutralImagePath = ['jspsych/scrambledNeutralFaces',randomScrambledNeutralMask].join('/')
-        var DisgustImageCuePath = ['jspsych/disgustFaces',randomDisgustImage].join('/')
-        var scrambledDisgustImagePath = ['jspsych/scrambledDisgustFaces',randomScrambledDisgustMask].join('/')
-        //chooseTheImage
-
-        delete CoinToss
-        if(i==0){var CoinToss = 0}
-        if(i==1){var CoinToss = 1}
-        if(i==2){
-        var CoinToss = jsPsych.randomization.sampleWithReplacement([0,1], 1)}
-        console.log= CoinToss
-        if(CoinToss==0){
-            var scrambledMaskPath= scrambledNeutralImagePath
-            var imageCuePath= NeutralImageCuePath
-        }else{
-            var scrambledMaskPath= scrambledDisgustImagePath
-            var imageCuePath= DisgustImageCuePath
+        //1000msITI
+        var ITI = {
+        type: 'html-keyboard-response',
+        stimulus: '<div style="font-size:60px;">+</div>',
+        choices: jsPsych.NO_KEYS,
+        trial_duration: ITIDuration,
+        on_finish: function(data){
+        data.StimulusDurationSetting = ITIDuration,
+        data.iTrial = i+1,
+        data.ExperimentPhase = 'Calibration',
+        data.Phase = 'ITI';
         }
-
-        //Finally, the path for the backwards Neutral Mask:
-        var NeutralImageMaskPath = ['jspsych/neutralFaces',randomNeutralMaskImage].join('/')
+        }
+        timeline.push(ITI)
 
         //250ms Forward-Mask (phase-scrambled face)
         var forwardMask = {
         type: 'image-keyboard-response',
-        stimulus: scrambledMaskPath,
+        stimulus: preloadedMaskImages[i].scrambledMask,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: forwardMaskDuration,
@@ -982,18 +949,18 @@ i = []
         var correctResponse= correctResponse
         //Define two variable stimuli for the cue, see integration below in "cue_proecure"
 
-        var sampledCueDuration= function(){
-        return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
+        // var sampledCueDuration= function(){
+        // return jsPsych.randomization.sampleWithoutReplacement(cueDuration, 1)[0]}
  
         //present the cue (16ms)
         var cueImage = {
         type: 'image-keyboard-response',
-        stimulus: imageCuePath,
+        stimulus: preloadedMaskImages[i].cue,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
-        trial_duration: sampledCueDuration,
+        trial_duration: cueDuration,
            on_finish: function(data){      
-        data.StimulusDurationSetting = sampledCueDuration,
+        data.StimulusDurationSetting = cueDuration,
         data.iTrial = i+1,
         data.ExperimentPhase = 'Calibration',
         data.Phase = 'Cue';
@@ -1004,7 +971,7 @@ i = []
         //100ms Neutral Face 
         var maskImage = {
         type: 'image-keyboard-response',
-        stimulus: NeutralImageMaskPath,
+        stimulus: preloadedMaskImages[i].neutralBackwardsMask,
         choices: jsPsych.NO_KEYS,
         stimulus_width: 300,
         trial_duration: backwardMaskDuration,

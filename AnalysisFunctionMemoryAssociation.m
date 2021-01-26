@@ -62,7 +62,7 @@ for iNode = 1:nNodes
         maleGenderFace = 1;
     else maleGenderFace = NaN;
     end
-    trialStruct(iTrial).maleFaceGenderRecollection = ;
+    trialStruct(iTrial).maleFaceGenderRecollection = maleGenderFace;
     trialStruct(iTrial).stimulusTarget = stimulus;
     trialStruct(iTrial).sliderResponse = response;
     trialStruct(iTrial).didSubjectEnterRearranged = didSubjectEnterRearranged;

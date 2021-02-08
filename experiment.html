@@ -20,11 +20,11 @@
 //Command Center
 
     //Part1: The initial Memory Phase 
-    var nPracticeFaceNamesForEachGender =0 //just for practice section
+    var nPracticeFaceNamesForEachGender = 4 //just for practice section
         practiceMinimumFaceNames = nPracticeFaceNamesForEachGender
     var minimumFaceNamesForEachGender = 64 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
         minimumFaceNames = minimumFaceNamesForEachGender //just to make the variable's definition more explicit up here, and more concise in the actual body of code
-    postCalibrationTrials = 0 //Number of trials in which we ask the subject if she saw a "disgust" face
+    postCalibrationTrials = 50 //Number of trials in which we ask the subject if she saw a "disgust" face
     ITIDurationRecall = 500     //Default = 500
     PresentationDuration = 5000//Default = 5000
     nMemorizationTrials = 0//(minimumFaceNames*2) //Default: (minimumFaceNames*2)
@@ -349,6 +349,7 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
                 disgustMasks: 1,
                 maleGender: 0}
         }}
+        var preloadedMaskImages = shuffle(preloadedMaskImages)
 
 /////////////////////////////  BEGIN EXPERIMENT  ////////////////////////////////////////////
         //Message prompting user to begin presentation
@@ -702,6 +703,17 @@ var directionsBeforeTest = {
         data.ExperimentPhase = 'Break';
         }}
         timeline.push(recapDirections) 
+
+        var directionsBeforeTest22 = {
+            type: 'image-button-response',
+            stimulus: 'directionsForTest2.JPG',
+            choices: ['Continue On to the Memory Test'],
+            on_finish: function(data){
+        data.iTrial = 1,
+        data.Phase = 'directionsForTest2'
+        data.ExperimentPhase ='break'
+        }}
+        timeline.push(directionsBeforeTest22)
     
 
 ////////////////////////////MEMORIZATION PHASE///////////////////////////////////////////
@@ -893,6 +905,9 @@ for(let i=0;i<nMemorizationTrials;i++){
         labels: ['<p>Intact</p><p>100% Confidence</p>','<p>Intact</p><p>50% Confidence</p>','Not Sure','<p>Rearranged</p><p>50% Confidence</p>','<p>Rearranged</p><p>100% Confidence</p>'],
         step: 12.5,
         stimulus_width: 400,
+        trial_duration: 100,
+        response_ends_trial: false,
+        
         //require_movement: true,
         on_finish: function(data){
         data.iTrial = i+1,
@@ -1077,10 +1092,21 @@ for(let i=0;i<nMemorizationTrials;i++){
 
         jsPsych.init({
             timeline: timeline,
+            preload_images: [neutralFacesArrFemale,neutralFacesArrMale,disgustFacesArrFemale,disgustFacesArrMale,scrambledDisgustFacesArrFemale,scrambledDisgustFacesArrMale],
             // on_finish: function(){  jsPsych.data.displayData()}
             on_finish: function(){}
         })
         
+
+    //     try {
+    // recurse();
+    // } catch (ex){
+    //     alert("Too much recursion!");
+    //     }
     </script>
     
     </html>
+
+
+
+    

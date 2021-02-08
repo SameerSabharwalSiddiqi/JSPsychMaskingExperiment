@@ -26,7 +26,7 @@ if iscell(file) == 0
 %Analysis for single CSV file
 [trialStruct,identifier] = AnalysisFunctionMemoryAssociation(resultsCSV);
 [trialStruct,combinationStruct] = distributionOfGenderPresentation(trialStruct);
-barXlabels = cell(8);
+barXlabels = cell(1,4);
 for i = 1:length(combinationStruct)
     barXlabels{i} = combinationStruct(i).genderKey;
 end

@@ -23,17 +23,15 @@
 //var isFirefox = typeof InstallTrigger !== 'undefined'
 
 //Command Center
-
-
-    //Part1: The initial Memory Phase 
-    var nPracticeFaceNamesForEachGender = 2 //just for practice section
+//Part1: The initial Memory Phase 
+var nPracticeFaceNamesForEachGender = 4 //just for practice section
         practiceMinimumFaceNames = nPracticeFaceNamesForEachGender// nPracticeFaceNamesForEachGender
     var minimumFaceNamesForEachGender = 64 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
         minimumFaceNames = minimumFaceNamesForEachGender //just to make the variable's definition more explicit up here, and more concise in the actual body of code
     postCalibrationTrials = 50 //Number of trials in which we ask the subject if she saw a "disgust" face
     ITIDurationRecall = 500     //Default = 500
     PresentationDuration = 5000//Default = 5000
-    nMemorizationTrials = (minimumFaceNames*2)//(minimumFaceNames*2) //Default: (minimumFaceNames*2)
+    nMemorizationTrials = 0//(minimumFaceNames*2)//(minimumFaceNames*2) //Default: (minimumFaceNames*2)
         nPracticeMemorizationTrials = (practiceMinimumFaceNames*2)
     //Part2: Recall/Masked-Affective Phase
     nTrialsRecall = (minimumFaceNames*2) //Default: (minimumFaceNames*2)-2
@@ -361,13 +359,13 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
         //Message prompting user to begin presentation
         var timeline = [];
         
-        if(isFirefox==0){
-          var fireFoxCheck = {
-        type: 'html-keyboard-response',
-        stimulus: 'This program only works on Firefox. Please switch to Firefox. If you are using Firefox and are still seeing this message, please update to latest version or <b>contact chua.lab@brooklyn.cuny.edu</b> to troubleshoot',
-        choices: jsPsych.NO_KEYS
-          }
-          timeline.push(fireFoxCheck)}
+        //if(isFirefox==0){
+        //  var fireFoxCheck = {
+        //type: 'html-keyboard-response',
+        //stimulus: 'This program only works on Firefox. Please switch to Firefox. If you are using Firefox and are still seeing this message, please update to latest version or <b>contact chua.lab@brooklyn.cuny.edu</b> to troubleshoot',
+        //choices: jsPsych.NO_KEYS
+        //  }
+        //  timeline.push(fireFoxCheck)}
           
         var surveyTrial = {
         type: 'survey-text',
@@ -651,30 +649,49 @@ var directionsBeforeTest = {
     //         data.didSubjectEnterRearranged= 0}
     // }}
     // timeline.push(recall)
-
-
+    var intactRearrangedQuery = {
+        type: 'html-button-response',
+        stimulus: [ImgStrRecall],
+        prompt: '<p> Is this face-name pair intact or rearranged?',
+        choices: ['Intact','Rearranged'],
+        stimulus_width: 400,
+        on_finish: function(data){
+            data.iTrial = i+1,
+            data.ExperimentPhase = 'Practice',
+            data.Phase = 'IntactOrRearranged',
+            data.Face = hybridArray[i].face
+            data.Name = hybridArray[i].name
+            data.rearranged = rearranged
+            if(data.button_pressed == 0){
+                data.didSubjectEnterRearranged =0
+            }else if(data.button_pressed ==1){
+                data.didSubjectEnterRearranged = 1
+            }
+        }
+    }
+    timeline.push(intactRearrangedQuery)
     var confidenceQuery = {
         type: 'html-slider-response',
         // imgString = concat('<img src=',face,' height="250px"'),
+        //lastResponse = jsPsych.data.get().last(1).values()[0].didSubjectEnterRearranged,
         stimulus: [ImgStrRecall],
-        prompt: '<p>Is the face-name pair intact or rearranged? Please adjust the slider in accordance with your confidence.</p>',
-        labels: ['<p>Intact</p><p>100% Confidence</p>','<p>Intact</p><p>50% Confidence</p>','Not Sure','<p>Rearranged</p><p>50% Confidence</p>','<p>Rearranged</p><p>100% Confidence</p>'],
-        step: 12.5,
-        //require_movement: true,
+        prompt: '<p>How confident are you in your decision?</p>',
+        labels: ['0%','20%','40%','60%','80%','100%'],
         stimulus_width: 400,
+
+        //trial_duration: 100,
+        //response_ends_trial: true,
+        
+        //require_movement: true,
         on_finish: function(data){
         data.iTrial = i+1,
-        data.Rearranged = rearranged,
         data.ExperimentPhase = 'Practice'
         data.Phase = 'ConfidenceQuery'
-        if(data.response > 50){
-            data.didSubjectEnterRearranged= 1}
-        else if(data.response < 50){
-            data.didSubjectEnterRearranged= 0}
-        else if(data.response == 50){
-            data.didSubjectEnterRearranged = 2
+        data.rearranged = rearranged
+        data.Face = hybridArray[i].face
+        data.Name = hybridArray[i].name
         }
-    }}
+    }
     timeline.push(confidenceQuery)
 
     var feedback = {
@@ -683,8 +700,8 @@ var directionsBeforeTest = {
             // if using key press for categorical judgement:
             // var rearrangedEntry = jsPsych.data.get().last(2).values()[0].didSubjectEnterRearranged; 
             // var rearrangedStim = jsPsych.data.get().last(2).values()[0].Rearranged;
-            var rearrangedEntry = jsPsych.data.get().last(1).values()[0].didSubjectEnterRearranged; 
-            var rearrangedStim = jsPsych.data.get().last(1).values()[0].Rearranged;
+            var rearrangedEntry = jsPsych.data.get().last(2).values()[0].didSubjectEnterRearranged; 
+            var rearrangedStim = jsPsych.data.get().last(2).values()[0].rearranged;
 
             //If Using slider for categorical judgment: 
         if(rearrangedEntry==1 && rearrangedStim ==1){
@@ -782,7 +799,7 @@ for(let i=0;i<nMemorizationTrials;i++){
 //////////////////////////////RECALL PHASE//////////////////////////////////////////////////////////
         var breakTrial = {
             type: 'html-keyboard-response',
-            stimulus: 'Press Key to Begin Memory Test',
+            stimulus: 'Press Any Key to Begin Memory Test',
             on_finish: function(data){
         data.iTrial = 1,
         data.Phase = 'welcomeScreen'
@@ -912,16 +929,41 @@ for(let i=0;i<nMemorizationTrials;i++){
     // }
     // timeline.push(recall)
 
+    var intactRearrangedQuery = {
+        type: 'html-button-response',
+        stimulus: [ImgStrRecall],
+        prompt: '<p> Is this face-name pair intact or rearranged?',
+        choices: ['Intact','Rearranged'],
+        stimulus_width: 400,
+        on_finish: function(data){
+            data.iTrial = i+1,
+            data.ExperimentPhase = 'Test',
+            data.Phase = 'IntactOrRearranged',
+            data.Face = hybridArray[i].face
+            data.Name = hybridArray[i].name
+            data.rearranged = rearranged
+            if(data.button_pressed == 0){
+                data.didSubjectEnterRearranged =0
+            }else if(data.button_pressed ==1){
+                data.didSubjectEnterRearranged = 1
+            }
+        }
+    }
+    timeline.push(intactRearrangedQuery)
+
+    //var didSubjectEnterRearranged = jsPsych.data.get().last(1).values()[0].didSubjectEnterRearranged
+
     var confidenceQuery = {
         type: 'html-slider-response',
         // imgString = concat('<img src=',face,' height="250px"'),
+        //lastResponse = jsPsych.data.get().last(1).values()[0].didSubjectEnterRearranged,
         stimulus: [ImgStrRecall],
-        prompt: '<p>Is the face-name pair intact or rearranged? Please adjust the slider in accordance with your confidence</p>',
-        labels: ['<p>Intact</p><p>100% Confidence</p>','<p>Intact</p><p>50% Confidence</p>','Not Sure','<p>Rearranged</p><p>50% Confidence</p>','<p>Rearranged</p><p>100% Confidence</p>'],
-        step: 12.5,
+        prompt: '<p>How confident are you in your decision?</p>',
+        labels: ['0%','20%','40%','60%','80%','100%'],
         stimulus_width: 400,
+
         //trial_duration: 100,
-        response_ends_trial: true,
+        //response_ends_trial: true,
         
         //require_movement: true,
         on_finish: function(data){
@@ -931,13 +973,6 @@ for(let i=0;i<nMemorizationTrials;i++){
         data.rearranged = rearranged
         data.Face = hybridArray[i].face
         data.Name = hybridArray[i].name
-        if(data.response > 50){
-            data.didSubjectEnterRearranged= 1}
-        else if(data.response < 50){
-            data.didSubjectEnterRearranged= 0}
-        else if(data.response == 50){
-            data.didSubjectEnterRearranged = 2
-        }
         }
     }
     timeline.push(confidenceQuery)
@@ -1107,17 +1142,9 @@ for(let i=0;i<nMemorizationTrials;i++){
 
         jsPsych.init({
             timeline: timeline,
-            //preload_images: [neutralFacesArrFemale,neutralFacesArrMale,disgustFacesArrFemale,disgustFacesArrMale,scrambledDisgustFacesArrFemale,scrambledDisgustFacesArrMale],
-            // on_finish: function(){  jsPsych.data.displayData()}
-            on_finish: function(){}
+            preload_images: [neutralFacesArrFemale,neutralFacesArrMale,disgustFacesArrFemale,disgustFacesArrMale,scrambledDisgustFacesArrFemale,scrambledDisgustFacesArrMale],
+            on_finish: function(){  jsPsych.data.displayData()}
         })
-        
-
-    //     try {
-    // recurse();
-    // } catch (ex){
-    //     alert("Too much recursion!");
-    //     }
     </script>
     
     </html>

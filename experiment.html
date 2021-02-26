@@ -17,17 +17,23 @@
     <script>
     //Command Center
 
+//check browser
+
+//UNCHECK BEFORE LAUNCH
+//var isFirefox = typeof InstallTrigger !== 'undefined'
+
 //Command Center
 
+
     //Part1: The initial Memory Phase 
-    var nPracticeFaceNamesForEachGender = 4 //just for practice section
-        practiceMinimumFaceNames = nPracticeFaceNamesForEachGender
+    var nPracticeFaceNamesForEachGender = 2 //just for practice section
+        practiceMinimumFaceNames = nPracticeFaceNamesForEachGender// nPracticeFaceNamesForEachGender
     var minimumFaceNamesForEachGender = 64 //sets the minimum number of faces per gender for the initial MEMORIZATION phase. The total number of faces (both genders), is 2x this number
         minimumFaceNames = minimumFaceNamesForEachGender //just to make the variable's definition more explicit up here, and more concise in the actual body of code
     postCalibrationTrials = 50 //Number of trials in which we ask the subject if she saw a "disgust" face
     ITIDurationRecall = 500     //Default = 500
     PresentationDuration = 5000//Default = 5000
-    nMemorizationTrials = 0//(minimumFaceNames*2) //Default: (minimumFaceNames*2)
+    nMemorizationTrials = (minimumFaceNames*2)//(minimumFaceNames*2) //Default: (minimumFaceNames*2)
         nPracticeMemorizationTrials = (practiceMinimumFaceNames*2)
     //Part2: Recall/Masked-Affective Phase
     nTrialsRecall = (minimumFaceNames*2) //Default: (minimumFaceNames*2)-2
@@ -354,6 +360,15 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
 /////////////////////////////  BEGIN EXPERIMENT  ////////////////////////////////////////////
         //Message prompting user to begin presentation
         var timeline = [];
+        
+        if(isFirefox==0){
+          var fireFoxCheck = {
+        type: 'html-keyboard-response',
+        stimulus: 'This program only works on Firefox. Please switch to Firefox. If you are using Firefox and are still seeing this message, please update to latest version or <b>contact chua.lab@brooklyn.cuny.edu</b> to troubleshoot',
+        choices: jsPsych.NO_KEYS
+          }
+          timeline.push(fireFoxCheck)}
+          
         var surveyTrial = {
         type: 'survey-text',
         questions: [
@@ -756,7 +771,7 @@ for(let i=0;i<nMemorizationTrials;i++){
         on_finish: function(data){
         data.iTrial = i+1,
         data.Phase = 'ITI';
-        data.StimulusDurationSetting = 
+        data.StimulusDurationSetting = 500
         data.ExperimentPhase = 'Memorization'
         data.Phase = 'fixation'
         }
@@ -905,8 +920,8 @@ for(let i=0;i<nMemorizationTrials;i++){
         labels: ['<p>Intact</p><p>100% Confidence</p>','<p>Intact</p><p>50% Confidence</p>','Not Sure','<p>Rearranged</p><p>50% Confidence</p>','<p>Rearranged</p><p>100% Confidence</p>'],
         step: 12.5,
         stimulus_width: 400,
-        trial_duration: 100,
-        response_ends_trial: false,
+        //trial_duration: 100,
+        response_ends_trial: true,
         
         //require_movement: true,
         on_finish: function(data){
@@ -1092,7 +1107,7 @@ for(let i=0;i<nMemorizationTrials;i++){
 
         jsPsych.init({
             timeline: timeline,
-            preload_images: [neutralFacesArrFemale,neutralFacesArrMale,disgustFacesArrFemale,disgustFacesArrMale,scrambledDisgustFacesArrFemale,scrambledDisgustFacesArrMale],
+            //preload_images: [neutralFacesArrFemale,neutralFacesArrMale,disgustFacesArrFemale,disgustFacesArrMale,scrambledDisgustFacesArrFemale,scrambledDisgustFacesArrMale],
             // on_finish: function(){  jsPsych.data.displayData()}
             on_finish: function(){}
         })

@@ -14,6 +14,7 @@ clear trialStruct
 clear durationStruct
 clear durTrials
 for iNode = 1:nNodes
+    run_id = resultsCSV.run_id(iNode);
     ExperimentPhase = resultsCSV.ExperimentPhase(iNode);
     Phase = resultsCSV.Phase(iNode);
     if strcmp(ExperimentPhase,'Test')
@@ -49,9 +50,12 @@ for iNode = 1:nNodes
         end
         trialStruct(iTrial).maleFaceGenderNeutralMask = maleFaceGender;
     end
+    if strcmp(Phase,'IntactOrRearranged')
+    didSubjectEnterRearranged = resultsCSV.didSubjectEnterRearranged(iNode);
+    isTargetRearranged = resultsCSV.rearranged(iNode);
+    end
     if strcmp(Phase,'ConfidenceQuery')
     %rearranged = resultsCSV.rearranged(iNode);
-    didSubjectEnterRearranged = resultsCSV.didSubjectEnterRearranged(iNode);
     response = resultsCSV.response(iNode);
     stimulus = resultsCSV.Face(iNode);
     [imageFileDir,imageFileName] = fileparts(stimulus);
@@ -66,6 +70,8 @@ for iNode = 1:nNodes
     trialStruct(iTrial).stimulusTarget = stimulus;
     trialStruct(iTrial).sliderResponse = response;
     trialStruct(iTrial).didSubjectEnterRearranged = didSubjectEnterRearranged;
+    trialStruct(iTrial).isTargetRearranged = isTargetRearranged;
+    trialStruct(iTrial).runID = run_id;
     iTrial = iTrial+1;
     end
     end

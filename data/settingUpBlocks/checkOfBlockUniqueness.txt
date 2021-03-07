@@ -1,0 +1,126 @@
+hybridArray[1]
+{name: "Jeremy", face: "CFD-AM-214-168-N.jpg", rearranged: 0}
+hybridArray[2]
+{name: "Travis", face: "CFD-LM-225-130-N.jpg", rearranged: 1}
+hybridArray[3]
+{name: "Christopher", face: "CFD-AM-207-108-N.jpg", rearranged: 0}
+hybridArray[4]
+{name: "Laura", face: "CFD-WF-207-014-N.jpg", rearranged: 1}
+hybridArray[5]
+{name: "Austin", face: "CFD-BM-010-003-N.jpg", rearranged: 0}
+hybridArray[6]
+{name: "Jordan", face: "CFD-WF-205-006-N.jpg", rearranged: 1}
+hybridArray[7]
+{name: "Kenneth", face: "CFD-LM-219-295-N.jpg", rearranged: 0}
+hybridArray[8]
+{name: "Kevin", face: "CFD-BM-001-014-N.jpg", rearranged: 0}
+hybridArray[9]
+{name: "Dustin", face: "CFD-AM-238-269-N.jpg", rearranged: 1}
+hybridArray[10]
+{name: "Rebecca", face: "CFD-LF-200-058-N.jpg", rearranged: 0}
+hybridArray[11]
+{name: "Heather", face: "CFD-WF-217-085-N.jpg", rearranged: 0}
+hybridArray[12]
+{name: "Sara", face: "CFD-BF-212-315-N.jpg", rearranged: 1}
+hybridArray[13]
+{name: "Jenna", face: "CFD-AF-240-206-N.jpg", rearranged: 1}
+hybridArray[14]
+{name: "Ryan", face: "CFD-WM-237-052-N.jpg", rearranged: 0}
+hybridArray[15]
+{name: "Lindsey", face: "CFD-WF-017-003-N.jpg", rearranged: 0}
+hybridArray[16]
+{name: "Jacob", face: "CFD-WM-015-002-N.jpg", rearranged: 1}
+hybridArray[17]
+{name: "Amy", face: "CFD-WF-215-145-N.jpg", rearranged: 0}
+hybridArray[18]
+{name: "Luis", face: "CFD-WM-232-070-N.jpg", rearranged: 1}
+hybridArray[19]
+{name: "Taylor", face: "CFD-WF-018-017-N.jpg", rearranged: 0}
+hybridArray[20]
+{name: "Angela", face: "CFD-LF-201-035-N.jpg", rearranged: 1}
+hybridArray[21]
+{name: "Melissa", face: "CFD-BF-023-010-N.jpg", rearranged: 0}
+hybridArray[22]
+{name: "Lauren", face: "CFD-AF-215-70-N.jpg", rearranged: 1}
+hybridArray[23]
+{name: "Sean", face: "CFD-BM-022-022-N.jpg", rearranged: 1}
+hybridArray[24]
+{name: "Cameron", face: "CFD-AM-234-355-N.jpg", rearranged: 0}
+hybridArray[25]
+{name: "Tyler", face: "CFD-AM-202-079-N.jpg", rearranged: 1}
+hybridArray[26]
+{name: "Steven", face: "CFD-BM-043-071-N.jpg", rearranged: 1}
+hybridArray[27]
+{name: "Jasmine", face: "CFD-WF-023-003-N.jpg", rearranged: 1}
+hybridArray[28]
+{name: "Tiffany", face: "CFD-AF-200-228-N.jpg", rearranged: 0}
+hybridArray[29]
+{name: "Justin", face: "CFD-BM-032-024-N.jpg", rearranged: 1}
+hybridArray[30]
+{name: "Whitney", face: "CFD-AF-208-003-N.jpg", rearranged: 0}
+hybridArray[31]
+{name: "Timothy", face: "CFD-AM-237-154-N.jpg", rearranged: 0}
+faceNamePairs[0]
+{name: "Cameron", face: "CFD-AM-234-355-N.jpg", rearranged: 0}
+faceNamePairs[1]
+{name: "Christopher", face: "CFD-AM-207-108-N.jpg", rearranged: 0}
+faceNamePairs[2]
+{name: "Kevin", face: "CFD-BM-001-014-N.jpg", rearranged: 0}
+faceNamePairs[3]
+{name: "Whitney", face: "CFD-AF-208-003-N.jpg", rearranged: 0}
+faceNamePairs[4]
+{name: "Amy", face: "CFD-WF-215-145-N.jpg", rearranged: 0}
+faceNamePairs[5]
+{name: "Dustin", face: "CFD-BM-022-022-N.jpg", rearranged: 0}
+faceNamePairs[6]
+{name: "Travis", face: "CFD-BM-043-071-N.jpg", rearranged: 0}
+faceNamePairs[7]
+{name: "Laura", face: "CFD-BF-212-315-N.jpg", rearranged: 0}
+faceNamePairs[8]
+{name: "Melissa", face: "CFD-BF-023-010-N.jpg", rearranged: 0}
+faceNamePairs[9]
+{name: "Sean", face: "CFD-WM-232-070-N.jpg", rearranged: 0}
+faceNamePairs[10]
+{name: "Rebecca", face: "CFD-LF-200-058-N.jpg", rearranged: 0}
+faceNamePairs[11]
+{name: "Jenna", face: "CFD-WF-023-003-N.jpg", rearranged: 0}
+faceNamePairs[12]
+{name: "Luis", face: "CFD-BM-032-024-N.jpg", rearranged: 0}
+faceNamePairs[13]
+{name: "Heather", face: "CFD-WF-217-085-N.jpg", rearranged: 0}
+faceNamePairs[14]
+{name: "Tyler", face: "CFD-LM-225-130-N.jpg", rearranged: 0}
+faceNamePairs[15]
+{name: "Jordan", face: "CFD-AF-240-206-N.jpg", rearranged: 0}
+faceNamePairs[16]
+{name: "Tiffany", face: "CFD-AF-200-228-N.jpg", rearranged: 0}
+faceNamePairs[17]
+{name: "Kenneth", face: "CFD-LM-219-295-N.jpg", rearranged: 0}
+faceNamePairs[18]
+{name: "Ryan", face: "CFD-WM-237-052-N.jpg", rearranged: 0}
+faceNamePairs[19]
+{name: "Jasmine", face: "CFD-LF-201-035-N.jpg", rearranged: 0}
+faceNamePairs[20]
+{name: "Lindsey", face: "CFD-WF-017-003-N.jpg", rearranged: 0}
+faceNamePairs[21]
+{name: "Jacob", face: "CFD-AM-238-269-N.jpg", rearranged: 0}
+faceNamePairs[22]
+{name: "Steven", face: "CFD-WM-015-002-N.jpg", rearranged: 0}
+faceNamePairs[23]
+{name: "Timothy", face: "CFD-AM-237-154-N.jpg", rearranged: 0}
+faceNamePairs[24]
+{name: "Taylor", face: "CFD-WF-018-017-N.jpg", rearranged: 0}
+faceNamePairs[25]
+{name: "Sara", face: "CFD-AF-215-70-N.jpg", rearranged: 0}
+faceNamePairs[26]
+{name: "Austin", face: "CFD-BM-010-003-N.jpg", rearranged: 0}
+faceNamePairs[27]
+{name: "Justin", face: "CFD-AM-202-079-N.jpg", rearranged: 0}
+faceNamePairs[28]
+{name: "Erin", face: "CFD-WF-207-014-N.jpg", rearranged: 0}
+faceNamePairs[29]
+{name: "Jeremy", face: "CFD-AM-214-168-N.jpg", rearranged: 0}
+faceNamePairs[30]
+{name: "Angela", face: "CFD-LF-230-203-N.jpg", rearranged: 0}
+faceNamePairs[31]
+{name: "Lauren", face: "CFD-WF-205-006-N.jpg", rearranged: 0}

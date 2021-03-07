@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,8 +37,6 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
     fixationDuration = 1000 //default = 200
     disgustKey = 'd'// When changing, change in prompt for test-phase as well!
     neutralKey = 'n'// When changing, change in prompt for test-phase as well!
-    nBlocks =  4
-
     
     //Loading Functions
     //Function 1: Shuffling Array
@@ -126,6 +123,21 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
     var rearrangedFemaleNameArray = []
     var rearrangedMaleNamePracticeArray = []
     var rearrangedFemaleNamePracticeArray =[]
+    for(var i=0;i<minimumFaceNames;i++){
+        let lastIndex = minimumFaceNames-1;
+        if(i==0){
+            rearrangedMaleNameArray[i]=maleNameArray[lastIndex-1]
+            rearrangedFemaleNameArray[i]=femaleNameArray[lastIndex-1]
+        }
+        if(i==1){
+            rearrangedMaleNameArray[i]=maleNameArray[lastIndex]
+            rearrangedFemaleNameArray[i]=femaleNameArray[lastIndex]
+
+        }
+        if(i>1){
+            rearrangedMaleNameArray[i]=maleNameArray[i-2]
+            rearrangedFemaleNameArray[i]=femaleNameArray[i-2]
+        }}
 
     for(var i=1;i<nPracticeFaceNamesForEachGender;i++){
         let lastPracticeIndex = practiceMinimumFaceNames-1
@@ -142,33 +154,12 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
             rearrangedFemaleNamePracticeArray[i] = practiceFemaleNameArray[i-2]
         }}
     
-    
-    let blockCntr = 0
-    for(var i=0; i<nBlocks; i++){
-        blockCntr = blockCntr++ ;
-    for(var k=0+16*blockCntr;i<minimumFaceNames/nBlocks;k++){
-        let lastIndex = minimumFaceNames-1;
-        if(k==0){
-            let rearrangedMaleNameArray=maleNameArray[lastIndex-1]
-            let rearrangedFemaleNameArray=femaleNameArray[lastIndex-1]
-        }
-        if(k==1){
-            let rearrangedMaleNameArray=maleNameArray[lastIndex]
-            let rearrangedFemaleNameArray=femaleNameArray[lastIndex]
-
-        }
-        if(k>1){
-            let rearrangedMaleNameArray= maleNameArray[k-2]
-            let rearrangedFemaleNameArray=femaleNameArray[k-2]
-        }}}
-
-    
-    // var nameArraysAreUnique = 1 //double-check
-    // for(var i = 0; i< minimumFaceNames;i++){
-    // let nameIntact = maleNameArray[i]
-    // let nameRearranged = rearrangedMaleNameArray[i]
-    // if(nameIntact=nameRearranged){nameArraysAreUnique=0}
-    // }
+    var nameArraysAreUnique = 1 //double-check
+    for(var i = 0; i< minimumFaceNames;i++){
+    let nameIntact = maleNameArray[i]
+    let nameRearranged = rearrangedMaleNameArray[i]
+    if(nameIntact=nameRearranged){nameArraysAreUnique=0}
+    }
 
     var maleFirstAllNames = maleNameArray.concat(femaleNameArray)
     var maleFirstAllFaces = maleFaceArray.concat(femaleFaceArray)
@@ -177,8 +168,6 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
     var maleFirstAllPracticeNames = practiceMaleNameArray.concat(practiceFemaleNameArray)
     var maleFirstAllPracticeFaces = practiceMaleFaceArray.concat(practiceFemaleFaceArray)
     var maleFirstRearrangedPracticeNames = rearrangedMaleNamePracticeArray.concat(rearrangedFemaleNamePracticeArray)
-
-    
 
     var nameArraysAreUnique = 1 //for below check, if 0 it means that one of the names in the rearranged array is not in fact switched in terms of its position
     //...which would lead to an INTACT face being labelled as REARRANGED (problem)
@@ -413,7 +402,7 @@ for(let i=0;i<nPracticeMemorizationTrials;i++){
     let cfdDirectory = 'jspsych/CFDfaces/'
     let faceDir = cfdDirectory.concat(face)
     faceDir = "'"+faceDir+"'"
-    var ImgStr = str1.concat(faceDir,str2,str3,'<b>',name,'</b>')
+    var ImgStr = practiceHeader.concat(str1,faceDir,str2,str3,'<b>',name,'</b>')
     var faceMemorization = {
     type: 'html-keyboard-response',
     // imgString = concat('<img src=',face,' height="250px"'),
@@ -632,7 +621,7 @@ var directionsBeforeTest = {
         var cfdDirectory = 'jspsych/CFDfaces/'
         var faceDirRecall = cfdDirectory.concat(faceRecall)
         faceDirRecall = "'"+faceDirRecall+"'"
-        var ImgStrRecall = str1.concat(faceDirRecall,str2,str3,'<b>',nameRecall,'</b>')
+        var ImgStrRecall = practiceHeader.concat(str1,faceDirRecall,str2,str3,'<b>',nameRecall,'</b>')
 
     //     //Recall/Test 
     //     var recall = {
@@ -653,12 +642,11 @@ var directionsBeforeTest = {
     //         data.didSubjectEnterRearranged= 0}
     // }}
     // timeline.push(recall)
-    var intactRearrangedQueryPractice = {
+    var intactRearrangedQuery = {
         type: 'html-button-response',
         stimulus: [ImgStrRecall],
         prompt: '<p> Is this face-name pair intact or rearranged?',
         choices: ['Intact','Rearranged'],
-        trial_duration: 5000,
         //stimulus_width: 400,
         on_finish: function(data){
             data.iTrial = i+1,
@@ -674,16 +662,14 @@ var directionsBeforeTest = {
             }
         }
     }
-    timeline.push(intactRearrangedQueryPractice)
-    var confidenceQueryPractice = {
+    timeline.push(intactRearrangedQuery)
+    var confidenceQuery = {
         type: 'html-slider-response',
         // imgString = concat('<img src=',face,' height="250px"'),
         //lastResponse = jsPsych.data.get().last(1).values()[0].didSubjectEnterRearranged,
         stimulus: [ImgStrRecall],
         prompt: '<p>How confident are you in your decision?</p>',
         labels: ['0%','20%','40%','60%','80%','100%'],
-        slider_start: 0,
-        trial_duration: 5000,
         //stimulus_width: 400,
 
         //trial_duration: 100,
@@ -699,7 +685,7 @@ var directionsBeforeTest = {
         data.Name = hybridArray[i].name
         }
     }
-    timeline.push(confidenceQueryPractice)
+    timeline.push(confidenceQuery)
 
     var feedback = {
         type: 'html-button-response',
@@ -711,10 +697,6 @@ var directionsBeforeTest = {
             var rearrangedStim = jsPsych.data.get().last(2).values()[0].rearranged;
 
             //If Using slider for categorical judgment: 
-        if(rearrangedEntry==undefined){
-          return "Please remember to click either button REARRANGED or INTACT!"
-        }
-        
         if(rearrangedEntry==1 && rearrangedStim ==1){
         return "You are Correct. You Called A Rearranged Pair Rearranged";} 
         else if(rearrangedEntry==1 && rearrangedStim ==0){
@@ -945,7 +927,6 @@ for(let i=0;i<nMemorizationTrials;i++){
         stimulus: [ImgStrRecall],
         prompt: '<p> Is this face-name pair intact or rearranged?',
         choices: ['Intact','Rearranged'],
-        trial_duration: 5000,
         //stimulus_width: 400,
         on_finish: function(data){
             data.iTrial = i+1,
@@ -972,8 +953,6 @@ for(let i=0;i<nMemorizationTrials;i++){
         stimulus: [ImgStrRecall],
         prompt: '<p>How confident are you in your decision?</p>',
         labels: ['0%','20%','40%','60%','80%','100%'],
-        slider_start: 0,
-        trial_duration: 5000,
         //stimulus_width: 400,
 
         //trial_duration: 100,
@@ -1133,7 +1112,6 @@ for(let i=0;i<nMemorizationTrials;i++){
         type: 'html-keyboard-response',
         stimulus: 'Did you see a disgust face? (Y/N)',
         choices: ['Y','N'],
-        trial_duration: 5000,
         on_finish: function(data){
         //data.Success = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(correctResponse),
         data.CharacterResponse = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press),

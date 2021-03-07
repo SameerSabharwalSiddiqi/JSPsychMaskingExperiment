@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,8 +37,6 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
     fixationDuration = 1000 //default = 200
     disgustKey = 'd'// When changing, change in prompt for test-phase as well!
     neutralKey = 'n'// When changing, change in prompt for test-phase as well!
-    nBlocks =  4
-
     
     //Loading Functions
     //Function 1: Shuffling Array
@@ -126,6 +123,21 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
     var rearrangedFemaleNameArray = []
     var rearrangedMaleNamePracticeArray = []
     var rearrangedFemaleNamePracticeArray =[]
+    for(var i=0;i<minimumFaceNames;i++){
+        let lastIndex = minimumFaceNames-1;
+        if(i==0){
+            rearrangedMaleNameArray[i]=maleNameArray[lastIndex-1]
+            rearrangedFemaleNameArray[i]=femaleNameArray[lastIndex-1]
+        }
+        if(i==1){
+            rearrangedMaleNameArray[i]=maleNameArray[lastIndex]
+            rearrangedFemaleNameArray[i]=femaleNameArray[lastIndex]
+
+        }
+        if(i>1){
+            rearrangedMaleNameArray[i]=maleNameArray[i-2]
+            rearrangedFemaleNameArray[i]=femaleNameArray[i-2]
+        }}
 
     for(var i=1;i<nPracticeFaceNamesForEachGender;i++){
         let lastPracticeIndex = practiceMinimumFaceNames-1
@@ -142,33 +154,12 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
             rearrangedFemaleNamePracticeArray[i] = practiceFemaleNameArray[i-2]
         }}
     
-    
-    let blockCntr = 0
-    for(var i=0; i<nBlocks; i++){
-        blockCntr = blockCntr++ ;
-    for(var k=0+16*blockCntr;i<minimumFaceNames/nBlocks;k++){
-        let lastIndex = minimumFaceNames-1;
-        if(k==0){
-            let rearrangedMaleNameArray=maleNameArray[lastIndex-1]
-            let rearrangedFemaleNameArray=femaleNameArray[lastIndex-1]
-        }
-        if(k==1){
-            let rearrangedMaleNameArray=maleNameArray[lastIndex]
-            let rearrangedFemaleNameArray=femaleNameArray[lastIndex]
-
-        }
-        if(k>1){
-            let rearrangedMaleNameArray= maleNameArray[k-2]
-            let rearrangedFemaleNameArray=femaleNameArray[k-2]
-        }}}
-
-    
-    // var nameArraysAreUnique = 1 //double-check
-    // for(var i = 0; i< minimumFaceNames;i++){
-    // let nameIntact = maleNameArray[i]
-    // let nameRearranged = rearrangedMaleNameArray[i]
-    // if(nameIntact=nameRearranged){nameArraysAreUnique=0}
-    // }
+    var nameArraysAreUnique = 1 //double-check
+    for(var i = 0; i< minimumFaceNames;i++){
+    let nameIntact = maleNameArray[i]
+    let nameRearranged = rearrangedMaleNameArray[i]
+    if(nameIntact=nameRearranged){nameArraysAreUnique=0}
+    }
 
     var maleFirstAllNames = maleNameArray.concat(femaleNameArray)
     var maleFirstAllFaces = maleFaceArray.concat(femaleFaceArray)
@@ -177,8 +168,6 @@ var isFirefox = typeof InstallTrigger !== 'undefined'
     var maleFirstAllPracticeNames = practiceMaleNameArray.concat(practiceFemaleNameArray)
     var maleFirstAllPracticeFaces = practiceMaleFaceArray.concat(practiceFemaleFaceArray)
     var maleFirstRearrangedPracticeNames = rearrangedMaleNamePracticeArray.concat(rearrangedFemaleNamePracticeArray)
-
-    
 
     var nameArraysAreUnique = 1 //for below check, if 0 it means that one of the names in the rearranged array is not in fact switched in terms of its position
     //...which would lead to an INTACT face being labelled as REARRANGED (problem)
@@ -363,13 +352,13 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
         //Message prompting user to begin presentation
         var timeline = [];
         
-        // if(isFirefox==0){
-        //   var fireFoxCheck = {
-        // type: 'html-keyboard-response',
-        // stimulus: 'This program only works on Firefox. Please switch to Firefox. If you are using Firefox and are still seeing this message, please update to latest version or <b>contact chua.lab@brooklyn.cuny.edu</b> to troubleshoot',
-        // choices: jsPsych.NO_KEYS
-        //   }
-        //   timeline.push(fireFoxCheck)}
+        if(isFirefox==0){
+          var fireFoxCheck = {
+        type: 'html-keyboard-response',
+        stimulus: 'This program only works on Firefox. Please switch to Firefox. If you are using Firefox and are still seeing this message, please update to latest version or <b>contact chua.lab@brooklyn.cuny.edu</b> to troubleshoot',
+        choices: jsPsych.NO_KEYS
+          }
+          timeline.push(fireFoxCheck)}
           
         var surveyTrial = {
         type: 'survey-text',

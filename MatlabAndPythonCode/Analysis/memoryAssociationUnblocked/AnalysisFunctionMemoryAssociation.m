@@ -79,9 +79,8 @@ for iNode = 1:nNodes
       if strcmp(Phase,'Query')
           DisgustEntry = resultsCSV.CharacterResponse(iNode);
           calibrationStruct(iCalibrationTrial).DisgustEntry = DisgustEntry;
-          calibrationStruct(iCalibrationTrial).runID = run_id;
-           iCalibrationTrial = iCalibrationTrial + 1;
       end
+      iCalibrationTrial = iCalibrationTrial + 1;
     end
 end
 

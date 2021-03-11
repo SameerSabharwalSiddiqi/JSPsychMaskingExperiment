@@ -1,5 +1,4 @@
 clear all
-addpath('C:\Users\16466\Desktop\MaskingExperimentJsPsych\MatlabAndPythonCode\Analysis\memoryAssociationUnblocked')
 %File selection
 confidenceAnalysis = 0;
 [file,path] = uigetfile('*.csv',...
@@ -25,7 +24,7 @@ end
 
 if iscell(file) == 0
 %Analysis for single CSV file
-[trialStruct,calibrationStruct,identifier] = AnalysisFunctionMemoryAssociation(resultsCSV);
+[trialStruct,identifier] = AnalysisFunctionMemoryAssociation(resultsCSV);
 [trialStruct,combinationStruct] = distributionOfGenderPresentation(trialStruct);
 barXlabels = cell(1,4);
 for i = 1:length(combinationStruct)
@@ -47,7 +46,7 @@ for iTrial = 1:length(trialStruct)
             MissOrCorrectHit = NaN;
 elseif strcmp(subjectEntry,'1')
            MissOrCorrectHit = 1; %1 for correct hit as rearranged
-           FAorCorrectRejection = NaN;
+            FAorCorrectRejection = NaN;
  end
  elseif strcmp(rearrangedStim,'0') 
         success = 0;
@@ -92,22 +91,10 @@ elseif aggregateQ ==1
         aggregateTable = struct2table(trialStruct);
         nRuns = max(aggregateTable.runID);
         runCntr = 0;
-        
-        aggregateCalibrationTable = struct2table(calibrationStruct);
         for iRun = 1:nRuns
             %subplot analysis
             subTableIndices = find(aggregateTable.runID==iRun);
             subTable = aggregateTable(subTableIndices,:);
-            
-            %Convert Field "slider Response to Numeric"
-            sliderResponseHolder = nan(1,height(subTable));
-            for iTrial = 1:height(subTable)
-                sliderResponse = str2double(subTable(iTrial,:).sliderResponse{1});
-                sliderResponseHolder(iTrial) = sliderResponse;
-            end
-            
-            subTableIndicesCalibration = find(aggregateCalibrationTable.runID==iRun);
-            subTableCalibration = aggregateCalibrationTable(subTableIndicesCalibration,:);
             if ~isempty(subTable)
             %[durationStruct,trialStruct,identifier] = AnalysisFunction(subTable);
             runCntr = runCntr +1;
@@ -133,11 +120,6 @@ elseif aggregateQ ==1
         grid on
         %yline(0.5,'r','Linewidth',2)
         hold on 
-        if runCntr == 1 
-        figure(3)
-        %legend('Success%','Null%','Hit%','CorrectRejection%');
-        else
-        end
         
         if confidenceAnalysis == 1
         confidenceBar = errorbar([durationStruct.cueDuration],[durationStruct.meanConfidence],[durationStruct.confIntForConfidence],'r');
@@ -145,23 +127,6 @@ elseif aggregateQ ==1
         if runCntr == 1
         end
         end
-        
-
-        
-        figure(4)
-        hold on
-        subplot(1,5,runCntr)
-        hist(sliderResponseHolder)
-        title('Distribution of Confidence Response')
-        
-        figure(5) %for calibration
-        hold on 
-        if runCntr == 1
-            calibrationResultHolder = nan(1);
-        end
-            subCalibrationArray = strcmp([subTableCalibration.DisgustEntry],'y');
-            calibrationResultHolder(runCntr) = nanmean(subCalibrationArray);
-
         end
 
 
@@ -197,13 +162,12 @@ elseif aggregateQ ==1
 %         faRateBar = errorbar([durationStruct.cueDuration],[durationStruct.falseAlarmRate],[durationStruct.FalarmConfInt]);
 %         faRateBar.LineWidth = 2;
          
-
-        end
-            figure(5)
-            bar(calibrationResultHolder)
-            xlabel('subject')
-            ylabel('Did You See Disgust Face % (1=YES)')
-            title('Affective Face Calibration')
+            if runCntr == 1 
+            figure(3)
+            legend('Success%','Null%','Hit%','CorrectRejection%');
+            else
+            end
+            end
 end
 
 

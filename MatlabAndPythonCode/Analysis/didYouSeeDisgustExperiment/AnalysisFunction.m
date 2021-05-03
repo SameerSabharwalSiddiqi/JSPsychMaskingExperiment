@@ -101,7 +101,7 @@ for iDuration = 1:length(durations)
     durationStruct(iDuration).recordedConfInt = confIntRecTime;
     durationStruct(iDuration).recordedStd = std(pd);
  
-    
+    [dpri,ccrit] = dprime(pHit,pFA,nTarget,nDistract)
     clear performance
     clear observations
 end

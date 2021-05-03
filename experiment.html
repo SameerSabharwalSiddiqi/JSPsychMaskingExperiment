@@ -11,6 +11,8 @@
         <script src = "jspsych/plugins/jspsych-video-button-response.js"></script>
         <script src = "jspsych/plugins/jspsych-fullscreen.js"></script>
         <script src = "jspsych/plugins/jspsych-html-slider-response.js"></script>
+        <script src = "jspsych//plugins//jspsych-survey-multi-select.js"></script>
+        <script src = "jspsych/plugins/jspsych-survey-multi-choice.js"></script>
         <link href = "jspsych/css/jspsych.css" rel = "stylesheet">
     </head>
     <body></body>
@@ -423,7 +425,7 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
         stimulus: 'This program only works on Firefox. Please switch to Firefox. If you are using Firefox and are still seeing this message, please update to latest version or <b>contact chua.lab@brooklyn.cuny.edu</b> to troubleshoot',
         choices: jsPsych.NO_KEYS
           }
-          timeline.push(fireFoxCheck)}
+        timeline.push(fireFoxCheck)}
           
         var surveyTrial = {
         type: 'survey-text',
@@ -432,6 +434,24 @@ var hybridPracticeArray = shuffle(hybridPracticeArray)
         ]
         }
         timeline.push(surveyTrial)
+
+        var queryAge = {
+        type: 'survey-text',
+        questions: [
+        {prompt: "Please Enter your age (in years)", placeholder: "xx"}
+        ]
+        }
+        timeline.push(queryAge)
+
+        var demographicSurvey = {
+        type: 'survey-multi-choice',
+        questions: [
+            {prompt: "Your Gender", options: ["male","female","other"]},
+            {prompt: "Your Ethnicity", options: ["Hispanic/Latino","Not Hispanic/Latino"]},
+            {prompt: "Your Race", options: ["American Indian/Alska Native","Asian","Native Hawaiian or Other Pacific Islander","White or Caucasian","Other"]},
+        ]
+        }
+        timeline.push(demographicSurvey)
 
 
         var DirectionsStepOne = {
@@ -767,7 +787,7 @@ var directionsBeforeTest = {
 
             //If Using slider for categorical judgment: 
         if(rearrangedEntry==undefined){
-          return "Please click either button: REARRANGED or INTACT. There is a 5 second time-limit!"
+          return "<p>Please click either button: REARRANGED or INTACT before the 5-second time limit.</p>"
         }
         else if(rearrangedEntry==1 && rearrangedStim ==1){
         return "You are Correct. You Called A Rearranged Pair Rearranged";} 
@@ -813,6 +833,7 @@ var directionsBeforeTest = {
         timeline.push(directionsBeforeTest22)
     
 iTrialCntr = 0;
+
 ////////////////////////////MEMORIZATION PHASE///////////////////////////////////////////
 for(let k =0;k<4;k++){
     if(k==0){
@@ -903,7 +924,6 @@ for(let k =0;k<4;k++){
     }
         //end of i, the in-block trial counter,
      //for end of k, the block counter, look to bottom of RECALL PHASE code
-
 
 //////////////////////////////RECALL PHASE//////////////////////////////////////////////////////////
         var breakTrial = {
@@ -1115,21 +1135,47 @@ for(let k =0;k<4;k++){
         // }}
         // timeline.push(test)
         
+
+        var writeInQuestion = {
+        type: 'survey-text',
+        questions: [
+        {prompt: "Before the memory trials, you saw flickering images, please describe what you saw"},
+        ],
+        on_finish: function(data){
+        data.Phase = 'WriteInQuestion';
+        data.ExperimentPhase = 'Test'
+        }
+        }
+        timeline.push(writeInQuestion)
+
+        var multiSelectQuestion = {
+        type: 'survey-multi-select',
+        questions: [
+        {
+        prompt: "<p>In the flickering images, you saw different faces.</p> <p>Please select any emotional expressions you saw.</p>", 
+        options: ["Happy", "Sad", "Angry", "Fear", "Disgust","Surprise","Neutral"], 
+        horizontal: false,
+        required: true,
+        name: 'Expressions'
+        }],
+        on_finish: function(data){
+        data.Phase = 'MultiSelectionQuestion';
+        data.ExperimentPhase = 'Test'
+        }}
+        timeline.push(multiSelectQuestion)
         
-        if(i == lastTrial){
         var lastTrialPhase = {
         type: 'html-button-response',
-        stimulus: 'Thank you for completing the main memorization task. The remaining task will be brief and non-strenous.',
-        choices: ['Continue On'],
+        stimulus: '<p>Thank you for completing the memorization task and associated questions.</p> <p>The remaining task will be brief and non-strenous.</p>',
+        choices: ['Continue'],
         on_finish: function(data){
         data.iTrial = iTrialCntr;
         data.Block = k+1;            
         data.Phase = 'BreakBeforeDisgustDetectionTrials';
         data.ExperimentPhase = 'break'
-        }
-        }
-        timeline.push(lastTrialPhase)}
-        
+        }}
+        timeline.push(lastTrialPhase)
+
 
 
 
@@ -1142,6 +1188,7 @@ for(let k =0;k<4;k++){
         data.Phase = 'directions'
         }}
         timeline.push(directionsToDetectionTask)
+    
     
 
         ////////////DISGUSTFACEDETECTIONS///////////
@@ -1269,8 +1316,7 @@ for(let k =0;k<4;k++){
         jsPsych.init({
             timeline: timeline,
             //preload_images: [neutralFacesArrFemale,neutralFacesArrMale,disgustFacesArrFemale,disgustFacesArrMale,scrambledDisgustFacesArrFemale,scrambledDisgustFacesArrMale],
-            on_finish: function(){jsPsych.data.displayData()}
+            //on_finish: function(){jsPsych.data.displayData()}
         })
     </script>
-    
     </html>

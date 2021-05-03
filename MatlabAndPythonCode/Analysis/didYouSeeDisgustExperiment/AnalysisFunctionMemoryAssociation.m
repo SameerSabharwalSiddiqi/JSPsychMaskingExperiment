@@ -1,4 +1,4 @@
-function [trialStruct,calibrationStruct,identifier] = AnalysisFunctionMemoryAssocation(dataCSV)
+function [trialStruct,calibrationStruct,identifier,PreCalibrationQStruct] = AnalysisFunctionMemoryAssocation(dataCSV)
 clear resultsCSV
 if ~istable(dataCSV)
 resultsCSV = readtable(dataCSV);
@@ -34,7 +34,7 @@ for iNode = 1:nNodes
         else
             maleFaceGender = NaN;
         end
-        trialStruct(iTrial).maleFaceGenderCue = maleFaceGender;
+    trialStruct(iTrial).maleFaceGenderCue = maleFaceGender;
     trialStruct(iTrial).stimulusCue = stimulus;
     trialStruct(iTrial).recordedCueTime = recordedTime;
     end
@@ -59,6 +59,7 @@ for iNode = 1:nNodes
     %rearranged = resultsCSV.rearranged(iNode);
     response = resultsCSV.response(iNode);
     stimulus = resultsCSV.Face(iNode);
+    block = resultsCSV.Block(iNode);
     [imageFileDir,imageFileName] = fileparts(stimulus);
     genderChar = imageFileName(6);
     if strcmp(genderChar,'F')
@@ -73,15 +74,28 @@ for iNode = 1:nNodes
     trialStruct(iTrial).didSubjectEnterRearranged = didSubjectEnterRearranged;
     trialStruct(iTrial).isTargetRearranged = isTargetRearranged;
     trialStruct(iTrial).runID = run_id;
+    trialStruct(iTrial).block = block;
     iTrial = iTrial+1;
     end
     elseif strcmp(ExperimentPhase,'Calibration')
-      if strcmp(Phase,'Query')
+      if strcmp(Phase,'Cue')
+          calibrationStruct(iCalibrationTrial).stimulusCue = resultsCSV.stimulus(iNode);
+      elseif strcmp(Phase,'Query')
           DisgustEntry = resultsCSV.CharacterResponse(iNode);
           calibrationStruct(iCalibrationTrial).DisgustEntry = DisgustEntry;
           calibrationStruct(iCalibrationTrial).runID = run_id;
-           iCalibrationTrial = iCalibrationTrial + 1;
+          iCalibrationTrial = iCalibrationTrial + 1;
       end
     end
+    %%BUG IN 3/23/2020 version of code, wherein ExperimentPhase and Phase
+    %%are reverse-labelled. When bug is fixed in next run, copy-and-paste
+    %%the below lines of code into the if-loop for all "Test" trials
+    if strcmp(Phase,'WriteInQuestion')
+        PreCalibrationQStruct.writeInQuestion = resultsCSV.responses(iNode);
+    elseif strcmp(Phase,'MultiSelectionQuestion')
+        PreCalibrationQStruct.multiSelect = resultsCSV.responses(iNode);
+    end
+end
+
 end
 

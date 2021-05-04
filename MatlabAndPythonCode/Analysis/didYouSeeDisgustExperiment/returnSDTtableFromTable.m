@@ -1,9 +1,4 @@
 function [SDTanalysis] = returnSDTtableFromTable(runTable,nBins)
-runTable.isTargetRearranged = str2num(cell2mat(runTable.isTargetRearranged));
-          trialsToRemove1 = find(isnan(runTable.success));
-          trialsToRemove2 = find(isnan(runTable.sliderResponse));
-          trialsToRemove = union(trialsToRemove1,trialsToRemove2);
-                    runTable(trialsToRemove,:) = [];
 
 binEdges = 0:(100/nBins):100;    
 nBins = length(binEdges) -1;

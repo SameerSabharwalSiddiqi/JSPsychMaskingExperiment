@@ -1,41 +1,24 @@
-%%%WARNING/REMINDER MANUAL "SEMI-COLONING" REQUIRED FOR Neutral vs. Disgust
-%%%DPRIME GRAPH, figure(6)
-%%%END
-
 clear all
 plotFigures = 0;
 addpath('C:\Users\16466\Desktop\MaskingExperimentJsPsych\MatlabAndPythonCode\Analysis')
 addpath('C:\Users\16466\Desktop\MaskingExperimentJsPsych\MatlabAndPythonCode\Analysis\memoryAssociationUnblocked')
 addpath('C:\Users\16466\Desktop\MaskingExperimentJsPsych\MatlabAndPythonCode\chuaLabCode')
+
 %File selection
-confidenceAnalysis = 0;
 [file,path] = uigetfile('*.csv',... 
    'Select One or More Excel Files', ...
    'MultiSelect', 'on');
 if iscell(file) == 0 %%not cell array --> single string that corresponds with single file
-    resultsCSV = fullfile(path,file);
-    aggregateQ = input('does this CSV have data from multiple runs? Select 0 if no 1 if yes');
+    resultsCSVstruct(1).filepath = fullfile(path,file);
 else %%cell array corresponds with multiple files/multi-selection
-    analysisChoice =input('Select 0 for individual analyses of files (subplots), or 1 for aggregate analysis\n');
-    if analysisChoice == 0
-        for iCSV = 1:length(file)
-        resultsCSVstruct(iCSV) = fullfile(path,file(iCSV));
-        end
-    elseif analysisChoice == 1
-        resultsCSV = concCSVtables([file,path]); %for aggregate analysis, conc. into one giant table
-        %%SINCE cognition.run seems actually to output aggregate into
-        %%single CSV file, will NOT bother finishing this code for now 
-    end
-
+     for iCSV = 1:length(file)
+        resultsCSVstruct(iCSV).filepath = fullfile(path,file(iCSV));
+     end
 end
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ANALYSIS FOR MULTIPLE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%FILES%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if iscell(file)==1 && analysisChoice==0 %%subplot analysis
-
 for iCSV = 1:length(resultsCSVstruct)
-        resultsCSV = resultsCSVstruct{iCSV};
+        resultsCSV = resultsCSVstruct(iCSV).filepath;
         [trialStruct,calibrationStruct,identifier,PreCalibrationQStruct] = AnalysisFunctionMemoryAssociation(resultsCSV);
         runID = trialStruct.runID;
         
@@ -567,7 +550,7 @@ end
         allDisgustTable = aggregateData(aggregateData.disgustCue==1,:);
         disgustHitTable = allDisgustTable(allDisgustTable.CorrectHitIsOne==1,:);
         meanDisgustHit = nanmean(disgustHitTable.sliderResponse);
-        stdDisgustHit = nanmean(disgustHitTable.sliderResponse);
+        stdDisgustHit = nanstd(disgustHitTable.sliderResponse);
         
         successVector = allDisgustTable.success;
         confidenceVector = allDisgustTable.sliderResponse;
@@ -587,7 +570,7 @@ end
            
         disgustFATable = allDisgustTable(allDisgustTable.FAisOne==1,:);
         meanDisgustFA = nanmean(disgustFATable.sliderResponse);
-        stdDisgustFA = nanmean(disgustFATable.sliderResponse);
+        stdDisgustFA = nanstd(disgustFATable.sliderResponse);
         
 
         barwitherr([stdNeutralHit,stdNeutralFA,stdDisgustHit,stdDisgustFA],[meanNeutralHit,meanNeutralFA,meanDisgustHit,meanDisgustFA])
@@ -680,6 +663,22 @@ end
          end
  %%%%%%%%%%%%%%%%%%%%%%%%%%%DO Hakwan Lau's SDT
  %%%%%%%%%%%%%%%%%%%%%%%%%%%Modelt
+ 
+ %aside - for the plot of neutral/disgust conf mean and sdt 
+ neutralConfMeanHolder = nan(1,length(trialStructHolder));
+ disgustConfMeanHolder = nan(1,length(trialStructHolder));
+ neutralStdHolder = nan(1,length(trialStructHolder));
+ disgustStdHolder = nan(1,length(trialStructHolder));
+ 
+ neutralHitConfMeanHolder = nan(1,length(trialStructHolder));
+ neutralFAConfMeanHolder = nan(1,length(trialStructHolder));
+ disgustHitConfMeanHolder = nan(1,length(trialStructHolder));
+ disgustFAConfMeanHolder = nan(1,length(trialStructHolder));
+ 
+ neutralHitConfStdHolder = nan(1,length(trialStructHolder));
+ neutralFAConfStdHolder = nan(1,length(trialStructHolder));
+ disgustHitConfStdHolder = nan(1,length(trialStructHolder));
+ disgustFAConfStdHolder = nan(1,length(trialStructHolder));
 
  for iRun = 1:length(trialStructHolder)
      runTable = trialStructHolder(iRun).runTable;
@@ -702,9 +701,37 @@ end
      metaDStruct(iRun).neutral = neutralMetaD;
      metaDStruct(iRun).disgust = disgustMetaD;
      metaDStruct(iRun).allTrials = MetaD;
+     
+     
+     %Also calculate here: mean of SDT
+     
+     
+     neutralConfMeanHolder(iRun) = nanmean(neutralTable.sliderResponse);
+     disgustConfMeanHolder(iRun) = nanmean(disgustTable.sliderResponse);
+     neutralStdHolder(iRun) = nanstd(neutralTable.sliderResponse);
+     disgustStdHolder(iRun) = nanstd(disgustTable.sliderResponse);
+     
+     
+     neutralHitTable = neutralTable(neutralTable.CorrectHitIsOne==1,:);
+        neutralHitConfMeanHolder(iRun) = nanmean(neutralHitTable.sliderResponse);
+        neutralHitConfStdHolder(iRun) = nan
+     neutralFATable = neutralTable(neutralTable.FAisOne==1,:);
+     disgustHitTable = disgustTable(disgustTable.CorrectHitIsOne==1,:);
+     disgustFATable = disgustTable(disgustTable.FAisOne==1,:);
  end
+X = categorical({'Neutral','Disgust'});
+
+ figure(38)
+ subplot(1,2,1)
+ bar(X,[mean(neutralConfMeanHolder),mean(disgustConfMeanHolder)])
+ title('mean confidence for by-participant neutral vs. disgust trials')
  
- 
+ subplot(1,2,2)
+ bar(X,[mean(neutralStdHolder),mean(disgustStdHolder)])
+  title('mean confidence std for by-participant neutral vs. disgust trials')
+  
+figure(39)
+
 
 figure(112)
 X = categorical({'Neutral','Disgust'});
@@ -788,5 +815,3 @@ title('mRatio - Neutral')
  scatter(dpriAll,[metaDStruct.allTrials])
  xlabel('dprime')
  ylabel('meta-d')
-elseif iscell(file)==1 && analysisChoice==1
-end

@@ -1,12 +1,8 @@
-%Two Changes made - address with Elizabeth 
-%1, if confidence value in sdtSorted is NaN, then I am making all other variables in sdtSorted row NaN
-%as well. Without this if-catch, the program fails, as it does not expect
-%nan in confidence column
 
-%2, adding nansum to tmpfreq calculations for both FC and RC (instead of
-%just sum). 
-
-function da = sdtMeta(correct, conf, Nratings, downsample)
+correct = [runTable.success];
+conf = [runTable.sliderResponse];
+Nratings = 101;
+downsample = 4;
 % correct - vector of 1 x ntrials, 0 for error, 1 for correct
 % conf - vector of 1 x ntrials of confidence ratings taking values 1:Nratings
 % Nratings - how many confidence levels available
@@ -36,10 +32,11 @@ sdtSorted=sortrows(sdtData,1);%sort
 %add sdtR and sdtF columns
 for iRate=1:Nratings
     for itrial=1:length(conf) 
-        sdtSorted(itrial,3)=sdtR(sdtSorted(itrial,1)+1); %SAMEER; adding 1 because index in sdtR is 1 more than actual value (index 1 == conf 0)
+        sdtSorted(itrial,3)=sdtR(sdtSorted(itrial,1)+1); 
         sdtSorted(itrial,4)=sdtF(sdtSorted(itrial,1)+1);
     end%itrial  
 end %iRate
+
 
 %make frequency "table"
 freqR=zeros(1,downsample);
@@ -109,3 +106,4 @@ end %ibin
 %calculate slope, intercept, da
 slope=polyfit(zROCF,zROCR,1); %gives slope and intercept
 da=(sqrt(2/(1+slope(1,1)^2)))*slope(1,2);
+
